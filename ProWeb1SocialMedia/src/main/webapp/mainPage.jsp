@@ -325,7 +325,7 @@
                         </div>
 
                         <div class="caption">
-                            <p><b>Adopta Monterrey</b> Gatito en adopciÃ³n. Informes al 8121122747 <span class="harsh-tag">#AdopcionResponsable</span></p>
+                            <p><b>Adopta Monterrey</b> Gatito en adopción. Informes al 8121122747 <span class="harsh-tag">#AdopcionResponsable</span></p>
                         </div>
                         <div class="comments text-muted">View all 23 comments</div>
                     </div>
@@ -415,7 +415,7 @@
                         </div>
 
                         <div class="caption">
-                            <p><b>Lana Rose</b> Fue un bonito dÃ­a.</p>
+                            <p><b>Lana Rose</b> Fue un bonito día.</p>
                         </div>
                         <div class="comments text-muted">View all 12 comments</div>
                     </div>

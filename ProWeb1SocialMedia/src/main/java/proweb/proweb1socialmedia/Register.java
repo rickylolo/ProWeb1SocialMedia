@@ -5,10 +5,14 @@
 package proweb.proweb1socialmedia;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -17,22 +21,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-/**
- *
- * @author ricky
- */
+
 public class Register extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -59,32 +54,61 @@ public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            String nombre = request.getParameter("name");
-            String apellidos = request.getParameter("apellido");
-            String fechaNacimiento = request.getParameter("fecha");
-            String correo = request.getParameter("email");
-            String imagen = request.getParameter("imagen"); 
-            String usuario = request.getParameter("usuario");
-            String contrasena = request.getParameter("contra");
+           
+        try {  
+            InputStream stream = null;
             Context contexto = new InitialContext();
             Context ambiente = (Context)contexto.lookup("java:comp/env");
             DataSource infoConexion = (DataSource)ambiente.lookup("jdbc/MeetingPoint");
             Connection conexion = infoConexion.getConnection();
-            PreparedStatement comando = conexion.prepareStatement("CALL InsertarUsuario(u_Nombre,u_Apellidos,u_FechaNacimiento,u_Correo,u_ImagenPerfil,u_NombreUsuario,u_Contra) "
-                    + "VALUES (?,?,?,?,?,?,?)");
-            comando.setString(1, nombre);
-            comando.setString(2, apellidos);
-            comando.setString(3, fechaNacimiento);
-            comando.setString(4, correo);
-            comando.setString(5, imagen);
-            comando.setString(6, usuario);
-            comando.setString(7, contrasena);
+            PreparedStatement comando = conexion.prepareStatement("CALL InsertarUsuario(?,?,?,?,?,?,?);");
+         
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            List<FileItem> items = upload.parseRequest(request);
+            for(FileItem item : items){
+                if(!item.isFormField()){
+                    stream = item.getInputStream();
+                    comando.setBlob(5,stream);
+             
+          
+                }
+                else{
+                     String fieldName = item.getFieldName();
+                     String fieldValue = item.getString();
+                     switch(fieldName){
+                         case "name":
+                               comando.setString(1, fieldValue);
+                             break;
+                         case "apellido":
+                              comando.setString(2, fieldValue);
+                             break;
+                         case "fecha":
+                              comando.setString(3, fieldValue);
+                             break;
+                         case "email":
+                              comando.setString(4, fieldValue);
+                             break;
+                         case "usuario":
+                              comando.setString(6, fieldValue);
+                             break;
+                         case "contra":
+                              comando.setString(7, fieldValue);
+                             break;
+                     } 
+                }
+            }
+
+           
+       
+        
             comando.execute();
             comando.close();
+            stream.close();
             conexion.close();
-        } catch (SQLException | NamingException e) {
- 
+        } 
+        catch (NamingException | SQLException | FileUploadException ex) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
         }
          request.getRequestDispatcher("/index.jsp").forward(request,response);
     }
@@ -93,5 +117,7 @@ public class Register extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+ 
 
 }
