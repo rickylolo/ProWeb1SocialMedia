@@ -74,7 +74,7 @@
         </form>
     </div>
     <div class="container-form sign-in">
-        <form class="formulario2" method="/Login" action="POST">
+        <form class="formulario2" method="POST" action="/Login">
             <h2 class="create-account">Iniciar sesion</h2>
             <div class="logo">
                 <div class="border-logo">
@@ -83,8 +83,8 @@
             </div>
             <p class="cuenta-gratis">Ingrese su datos</p>
             
-            <input type="email" placeholder="Email" required> 
-            <input type="password" placeholder="Contraseña" required>
+            <input type="email" name="emailLogin" id="emailLogin" placeholder="Email" required> 
+            <input type="password" name="passLogin" id="passLogin" placeholder="Contraseña" required>
             <input class="btn" type="submit" value="Iniciar sesion">
         </form>
         <div class="welcome-back">

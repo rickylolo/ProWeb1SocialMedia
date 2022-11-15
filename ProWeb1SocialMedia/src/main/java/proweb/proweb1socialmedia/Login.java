@@ -52,14 +52,14 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
       
         try {
-            String usuarioLogin = request.getParameter("userLogin");
+            String correoLogin = request.getParameter("emailLogin");
             String passLogin = request.getParameter("passLogin");
             Context contexto = new InitialContext();
             Context ambiente = (Context)contexto.lookup("java:comp/env");
             DataSource infoConexion = (DataSource)ambiente.lookup("jdbc/MeetingPoint");
             Connection conexion = infoConexion.getConnection();
-            PreparedStatement comando = conexion.prepareStatement("SELECT * FROM usuario WHERE usuario = ? AND pass = ?");
-            comando.setString(1, usuarioLogin);
+            PreparedStatement comando = conexion.prepareStatement("CALL LoginUsuario(?,?);");
+            comando.setString(1, correoLogin);
             comando.setString(2, passLogin);
             UserDTO miUsuario = null;
              
@@ -68,14 +68,12 @@ public class Login extends HttpServlet {
                 resultados.next();
                 if(!(resultados.wasNull())){
                     miUsuario = new UserDTO();               
-                    miUsuario.setId(resultados.getInt("id")); 
-                    miUsuario.setNickname(resultados.getString("usuario"));
-                    miUsuario.setContrasena(resultados.getString("pass"));
+                    miUsuario.setId(resultados.getInt("CveUSuario")); 
                 }
                 else{
                      comando.close();
                      conexion.close();
-                     request.getRequestDispatcher("/Error_Login.jsp").forward(request, response);
+                     request.getRequestDispatcher("/Login.jsp").forward(request, response);
                 }
             
                
@@ -87,7 +85,7 @@ public class Login extends HttpServlet {
             HttpSession miSesion = request.getSession();
             miSesion.setAttribute("usuario", miUsuario);
           
-       request.getRequestDispatcher("/socialmedia.html").forward(request, response);
+       request.getRequestDispatcher("/mainPage.jsp").forward(request, response);
           
             
            
