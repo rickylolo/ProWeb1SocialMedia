@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/ProWeb1SocialMedia"/>
+<Context path="" antiResourceLocking="false" privileged="true">
+    <Resource name="jdbc/MeetingPoint"
+    auth="Container"
+    type="javax.sql.DataSource"
+    username="root"
+    password="zL6MMqF51868520"
+    driverClassName="com.mysql.cj.jdbc.Driver"
+    url="jdbc:mysql://localhost:3306/MeetingPoint?serverTimezone=America/Monterrey"/>
+</Context>

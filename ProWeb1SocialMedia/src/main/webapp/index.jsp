@@ -23,45 +23,45 @@
             <div class="message">
                 <h2>Bienvenido de nuevo</h2>
                 <p>Si ya tienes una cuenta inicia sesion aqui</p>
-                <button class="sign-up-btn">Iniciar sesion</button>
+                <button class="sign-up-btn">Iniciar sesión</button>
 
             </div>
         </div>
-        <form class="formulario">
+        <form class="formulario" action="POST" method="/Register"  enctype="multipart/form-data">
             <h2 class="create-account">Crear una cuenta</h2>
 
             <div class="form-input nameD">
-            <input type="text" id="name" placeholder="Nombre" title="Nombre(s) solo puede incluir letras del alfabeto español y espacios en blanco.">
+            <input type="text" id="name" name="name" placeholder="Nombre" title="Nombre(s) solo puede incluir letras del alfabeto español y espacios en blanco.">
             <p class="mensajeError"></p>
             </div>
 
             <div class="form-input apellidoD">
-            <input type="text" id="apellido" placeholder="Apellidos" title="Solo puede incluir letras del alfabeto español y espacios en blanco.">
+            <input type="text" id="apellido" id="apellido" placeholder="Apellidos" title="Solo puede incluir letras del alfabeto español y espacios en blanco.">
             <p class="mensajeError"></p>
             </div>
 
             <div class="form-input fechaD">
-            <input type="date" id="fecha" placeholder="Fecha de nacimiento" title="El usuario debe ser mayor de 13 años.">
+            <input type="date" id="fecha" name="fecha" placeholder="Fecha de nacimiento" title="El usuario debe ser mayor de 13 años.">
             <p class="mensajeError"></p>
             </div>
 
             <div class="form-input emailD">
-            <input type="email" id="email" placeholder="Email" title="Debe tener formato de correo electrónico válido. "> 
+            <input type="email" id="email" name="email" placeholder="Email" title="Debe tener formato de correo electrónico válido. "> 
             <p class="mensajeError"></p>
             </div>
 
             <div class="form-input imagenD">
-            <input type="file" id="imagen" accept="image/png, image/jpg">
+            <input type="file" id="imagen" name="imagen" accept="image/png, image/jpg">
             <p class="mensajeError"></p>
             </div>
 
             <div class="form-input usuarioD">
-            <input type="text" id="usuario" placeholder="Nombre de usuario" title="Nombre de usuario.">
+            <input type="text" id="usuario" name="usuario" placeholder="Nombre de usuario" title="Nombre de usuario.">
             <p class="mensajeError"></p>
             </div>
 
             <div class="form-input contraD">
-            <input type="password" id="contra" placeholder="Contraseña" title="Por lo menos 8 caracteres, una letra mayúscula, una letra minúscula, un número y un signo de puntuación.">
+            <input type="password" id="contra" name="contra" placeholder="Contraseña" title="Por lo menos 8 caracteres, una letra mayúscula, una letra minúscula, un número y un signo de puntuación.">
             <p class="mensajeError"></p>
             </div>
 
@@ -75,7 +75,7 @@
         </form>
     </div>
     <div class="container-form sign-in">
-        <form class="formulario2">
+        <form class="formulario2" method="POST" action="/Login">
             <h2 class="create-account">Iniciar sesion</h2>
             <div class="logo">
                 <div class="border-logo">
