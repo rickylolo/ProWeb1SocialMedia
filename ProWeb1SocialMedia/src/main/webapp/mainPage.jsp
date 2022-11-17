@@ -201,10 +201,11 @@
                                 <div class="profile-photo">
                                     <img src="/ShowImage">
                                 </div>
+                                 <input type="hidden" name="accion" value="insertar">
                                 <input type="text" name="texto" id="create-post">
                                  <label class="btn" for="file-input"><i class="uil uil-camera-plus"></i></label>
                                    <input id="file-input" style="display:none;" onchange="vista_preliminar(event)" name="foto" type="file"/>
-                                <button type="button" class="btn btn-primary">Publicar</button>
+                                <button type="submit" class="btn btn-primary">Publicar</button>
                                   
                             </form>
                                     </div>

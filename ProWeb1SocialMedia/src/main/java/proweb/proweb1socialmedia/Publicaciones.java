@@ -10,17 +10,23 @@ import DTO.UserDTO;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -105,19 +111,20 @@ public class Publicaciones extends HttpServlet {
                             
                      
                          case "accion":
-                              miPublicacion.setTexto(fieldValue);
+                             accion=fieldValue;
                              break;
                      
                      } 
                 }
             }
-            stream.close();
+          
             HttpSession session=request.getSession();
             UserDTO user=(UserDTO)session.getAttribute("usuario");
             int iduser = user.getId();
             miPublicacion.setIdUsuario(iduser);
             if(accion.equals("insertar")){
                 PublicacionDAO.insertar(miPublicacion);
+                stream.close();
             }
                
             if(accion.equals("actualizar")){
@@ -127,12 +134,13 @@ public class Publicaciones extends HttpServlet {
             if(accion.equals("eliminar")){
                PublicacionDAO.eliminar(miPublicacion);   
             }
-            response.sendRedirect("/Publicaciones");
+            
+            
             
         } catch (FileUploadException | NamingException | SQLException ex) {
             Logger.getLogger(Publicaciones.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        request.getRequestDispatcher("/mainPage.jsp").forward(request,response);
 
     }
 
