@@ -28,7 +28,7 @@
         </div>
         <form class="formulario" action="/Register" method="POST"  enctype="multipart/form-data">
             <h2 class="create-account">Crear una cuenta</h2>
-
+            <input type="hidden" name="accion" value="insertar">
             <div class="form-input nameD">
             <input type="text" id="name" name="name" placeholder="Nombre" title="Nombre(s) solo puede incluir letras del alfabeto español y espacios en blanco.">
             <p class="mensajeError"></p>

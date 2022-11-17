@@ -31,7 +31,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 
-public class Register extends HttpServlet {
+public class Edit extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -77,7 +77,7 @@ public class Register extends HttpServlet {
             
         
              } catch (NamingException | SQLException ex) {
-            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Edit.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -91,39 +91,36 @@ public class Register extends HttpServlet {
             Context ambiente = (Context)contexto.lookup("java:comp/env");
             DataSource infoConexion = (DataSource)ambiente.lookup("jdbc/MeetingPoint");
             Connection conexion = infoConexion.getConnection();
-            PreparedStatement comando = conexion.prepareStatement("CALL InsertarUsuario(?,?,?,?,?,?,?);");
+            PreparedStatement comando = conexion.prepareStatement("CALL ActualizarUsuario(?,?,?,?,?,?);");
             DiskFileItemFactory factory = new DiskFileItemFactory();
             ServletFileUpload upload = new ServletFileUpload(factory);
             List<FileItem> items = upload.parseRequest(request);
+              HttpSession session=request.getSession();
+            UserDTO user=(UserDTO)session.getAttribute("usuario");
+           int iduser = user.getId();
+            comando.setInt(1, iduser);
             for(FileItem item : items){
                 if(!item.isFormField()){
                     stream = item.getInputStream();
                     comando.setBlob(5,stream);
-             
-          
                 }
                 else{
                      String fieldName = item.getFieldName();
                      String fieldValue = item.getString();
                      switch(fieldName){
                          case "name":
-                               comando.setString(1, fieldValue);
+                               comando.setString(2, fieldValue);
                              break;
                          case "apellido":
-                              comando.setString(2, fieldValue);
-                             break;
-                         case "fecha":
                               comando.setString(3, fieldValue);
                              break;
-                         case "email":
+                         case "fecha":
                               comando.setString(4, fieldValue);
                              break;
-                         case "usuario":
+                         case "contra":             
                               comando.setString(6, fieldValue);
                              break;
-                         case "contra":
-                              comando.setString(7, fieldValue);
-                             break;
+                      
                      } 
                 }
             }
@@ -137,9 +134,9 @@ public class Register extends HttpServlet {
            
         } 
         catch (NamingException | SQLException | FileUploadException ex) {
-            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Edit.class.getName()).log(Level.SEVERE, null, ex);
         }
-         request.getRequestDispatcher("/index.jsp").forward(request,response);
+         request.getRequestDispatcher("/mainPage.jsp").forward(request,response);
     }
 
     @Override

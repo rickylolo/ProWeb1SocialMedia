@@ -68,7 +68,7 @@ public class Login extends HttpServlet {
                 resultados.next();
                 if(!(resultados.wasNull())){
                     miUsuario = new UserDTO();               
-                    miUsuario.setId(resultados.getInt("CveUSuario")); 
+                    miUsuario.setId(resultados.getInt("CveUsuario")); 
                 }
                 else{
                      comando.close();

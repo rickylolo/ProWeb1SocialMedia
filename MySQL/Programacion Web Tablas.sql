@@ -21,10 +21,9 @@ DROP TABLE IF EXISTS Publicaciones;
 CREATE TABLE Publicaciones(
 	CvePubli		INT NOT NULL AUTO_INCREMENT,
     Texto			VARCHAR(280),
-    Imagen			BLOB,
+    Imagen			MEDIUMBLOB,
     Spoiler			BIT DEFAULT 1 NOT NULL,
     FechaCreacion	DATETIME NOT NULL,
-    Etiqueta        VARCHAR(50),
 	IdUsuario 		INT NOT NULL,
     Activo		    BIT DEFAULT 1 NOT NULL,
     

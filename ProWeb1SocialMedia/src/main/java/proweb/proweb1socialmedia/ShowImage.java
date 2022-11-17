@@ -33,7 +33,7 @@ public class ShowImage extends HttpServlet {
             Context ambiente = (Context)contexto.lookup("java:comp/env");
             DataSource infoConexion = (DataSource)ambiente.lookup("jdbc/MeetingPoint");
             Connection conexion = infoConexion.getConnection();
-            PreparedStatement comando = conexion.prepareStatement("SELECT * FROM usuario WHERE id= ?");
+            PreparedStatement comando = conexion.prepareStatement("SELECT * FROM Usuarios WHERE CveUsuario= (?)");
              HttpSession session=request.getSession();
             UserDTO user=(UserDTO)session.getAttribute("usuario");
            int iduser = user.getId();
@@ -41,7 +41,7 @@ public class ShowImage extends HttpServlet {
             if(comando.execute()){
                 ResultSet miResultSet = comando.getResultSet();
                 miResultSet.next();
-                 byte[] miFoto = miResultSet.getBytes("imagen");
+                 byte[] miFoto = miResultSet.getBytes("ImagenPerfil");
                  response.getOutputStream().write(miFoto);
                 
             }
