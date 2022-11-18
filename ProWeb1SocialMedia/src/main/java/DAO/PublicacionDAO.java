@@ -28,7 +28,8 @@ public class PublicacionDAO {
                   publicacion.setTexto(resultados.getString("Texto"));
                   publicacion.setSpoiler(resultados.getBoolean("Spoiler"));
                   publicacion.setIdUsuario(resultados.getInt("IdUsuario"));
-                  publicacion.setActivo(resultados.getBoolean("Activo"));
+                  publicacion.setNombreCompleto(resultados.getString("NombreCompleto"));
+                  publicacion.setFecha(resultados.getString("FechaCreacion"));
                  publicaciones.add(publicacion);
             } 
         }
@@ -85,6 +86,7 @@ public class PublicacionDAO {
                   publicacion.setSpoiler(resultados.getBoolean("Spoiler"));
                   publicacion.setIdUsuario(resultados.getInt("IdUsuario"));
                   publicacion.setActivo(resultados.getBoolean("Activo"));
+                  
 
             } 
         }

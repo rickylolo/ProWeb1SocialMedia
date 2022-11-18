@@ -14,6 +14,25 @@ public class PublicacionDTO {
     private boolean spoiler;
     private int IdUsuario;
     private boolean Activo;
+    private String NombreCompleto;
+    private String Fecha;
+    
+    public String getNombreCompleto() {
+        return NombreCompleto;
+    }
+
+    public void setNombreCompleto(String NombreCompleto) {
+        this.NombreCompleto = NombreCompleto;
+    }
+
+    public String getFecha() {
+        return Fecha;
+    }
+
+    public void setFecha(String Fecha) {
+        this.Fecha = Fecha;
+    }
+ 
     
     public PublicacionDTO() {
     }

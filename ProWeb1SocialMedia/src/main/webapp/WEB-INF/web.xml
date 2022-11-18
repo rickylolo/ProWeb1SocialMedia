@@ -8,7 +8,7 @@
         <servlet-name>Register</servlet-name>
         <servlet-class>proweb.proweb1socialmedia.Register</servlet-class>
     </servlet>
-        <servlet>
+    <servlet>
         <servlet-name>Edit</servlet-name>
         <servlet-class>proweb.proweb1socialmedia.Edit</servlet-class>
     </servlet>
@@ -16,9 +16,21 @@
         <servlet-name>Publicaciones</servlet-name>
         <servlet-class>proweb.proweb1socialmedia.Publicaciones</servlet-class>
     </servlet>
-      <servlet>
+    <servlet>
         <servlet-name>ShowImage</servlet-name>
         <servlet-class>proweb.proweb1socialmedia.ShowImage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowImagePost</servlet-name>
+        <servlet-class>proweb.proweb1socialmedia.ShowImagePost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowImageUser</servlet-name>
+        <servlet-class>proweb.proweb1socialmedia.ShowImageUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Like</servlet-name>
+        <servlet-class>proweb.proweb1socialmedia.Like</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -32,13 +44,25 @@
         <servlet-name>Publicaciones</servlet-name>
         <url-pattern>/Publicaciones</url-pattern>
     </servlet-mapping>
-        <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ShowImage</servlet-name>
         <url-pattern>/ShowImage</url-pattern>
     </servlet-mapping>
-        <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>Edit</servlet-name>
         <url-pattern>/Edit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowImagePost</servlet-name>
+        <url-pattern>/ShowImagePost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowImageUser</servlet-name>
+        <url-pattern>/ShowImageUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Like</servlet-name>
+        <url-pattern>/Like</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
