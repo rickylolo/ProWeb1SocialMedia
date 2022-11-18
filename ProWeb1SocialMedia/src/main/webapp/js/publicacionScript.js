@@ -1,25 +1,25 @@
 $(document).ready(function () {
-    let pagina = 1;
-
-    let totalDatos = (parseInt(pagina)) * 10;
-     $.ajax(
-    //GET DATOS PUBLICACIONES
-    {
-      url: "http://localhost:8080/Publicaciones"
-    }
-  )
-    .done(function (data) {
-        console.log(data);
-           $("#misPublicaciones").empty();
+  cargarPublicaciones();
+  function cargarPublicaciones() {
+    $.ajax(
+      //GET DATOS PUBLICACIONES
+      {
+        url: "http://localhost:8080/Publicaciones",
+      }
+    )
+      .done(function (data) {
+        $("#misPublicaciones").empty();
         for (let i = 0; i < data.length; i++) {
-            if (i < 10) {
-                let texto = data[i].texto;
+          if (i < 10) {
+            let texto = data[i].texto;
 
-                let newTexto = texto.replaceAll(/#([A-Za-z]+)/g, "#<a href=\"#\" class=\"hash\">$1</a>");
+            let newTexto = texto.replaceAll(
+              /#([A-Za-z]+)/g,
+              '#<a href="#" class="hash">$1</a>'
+            );
 
-
-                $("#misPublicaciones").append(
-                        `
+            $("#misPublicaciones").append(
+              `
             
                    
                       <div class="feed">
@@ -42,9 +42,9 @@ $(document).ready(function () {
                                         <img src="/ShowImagePost?id=${data[i].id}">
                                     </div>
 
-                                    <div class="action-buttons">
-                                        <div class="interaction-buttons">
-                                            <span id="Usuariolike"><i class="uil uil-heart"></i></span>
+                                    <div class="action-buttons" id="${data[i].id}">
+                                        <div class="interaction-buttons" id="MisInteracciones">
+                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
                                             <span><i class="uil uil-comment-dots"></i></span>
                                             <span><i class="uil uil-share-alt"></i></span>
                                         </div>
@@ -54,7 +54,7 @@ $(document).ready(function () {
                                     </div>
 
                                     <div class="liked-by">                                   
-                                        <p>Le gusta a # personas</b></p>
+                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
                                     </div>
 
                                     <div class="caption">
@@ -62,21 +62,36 @@ $(document).ready(function () {
                                     </div>
                                     <div class="comments text-muted">Ver los # comentarios</div>
                                 </div>
-                    `);
-
-            }
-            if (i % 10 == 0) {
-                numberPage = (i / 10) + 1;
-                Math.trunc(numberPage);
-
-            }
-
+                    `
+            );
+          }
+          if (i % 10 == 0) {
+            numberPage = i / 10 + 1;
+            Math.trunc(numberPage);
+          }
         }
-  
-     
-    })
-    .fail(function (data) {
-      console.error(data);
-    });
-
+      })
+      .fail(function (data) {
+        console.error(data);
+      });
+  }
+  //  ELIMINAR DINAMICO
+    $("#misPublicaciones").on('click', ".Usuariolike", funcDarLike);
+  function funcDarLike() {
+    let miIdPublicacion = $(this).parent().parent().attr("id");
+    $.ajax(
+      //GET DATOS USUARIO
+      {
+        url: "http://localhost:8080/Like",
+        type: "POST",
+        data: { idPublicacion: miIdPublicacion }
+      }
+    )
+      .done(function (data) {
+        cargarPublicaciones();
+      })
+      .fail(function (data) {
+        console.error(data);
+      });
+  }
 });

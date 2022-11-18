@@ -16,6 +16,15 @@ public class PublicacionDTO {
     private boolean Activo;
     private String NombreCompleto;
     private String Fecha;
+    private String TotalLikes;
+
+    public String getTotalLikes() {
+        return TotalLikes;
+    }
+
+    public void setTotalLikes(String TotalLikes) {
+        this.TotalLikes = TotalLikes;
+    }
     
     public String getNombreCompleto() {
         return NombreCompleto;

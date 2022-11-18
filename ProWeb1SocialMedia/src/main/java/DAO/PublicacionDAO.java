@@ -30,6 +30,7 @@ public class PublicacionDAO {
                   publicacion.setIdUsuario(resultados.getInt("IdUsuario"));
                   publicacion.setNombreCompleto(resultados.getString("NombreCompleto"));
                   publicacion.setFecha(resultados.getString("FechaCreacion"));
+                  publicacion.setTotalLikes(resultados.getString("TotalLikes"));
                  publicaciones.add(publicacion);
             } 
         }

@@ -13,7 +13,7 @@ END //
 
 DROP PROCEDURE IF EXISTS ActualizarUsuario;
 DELIMITER //
-CREATE PROCEDURE ActualizarUsuario(IN u_id INT,IN u_Nombre VARCHAR(50),IN u_Apellidos VARCHAR(50),IN u_FechaNacimiento DATE,IN u_ImagenPerfil MEDIUMBLOB,IN u_Contra VARCHAR(30))
+CREATE PROCEDURE ActualizarUsuario(IN u_id INT,IN u_Nombre VARCHAR(50),IN u_Apellidos VARCHAR(50),IN u_FechaNacimiento VARCHAR(20),IN u_ImagenPerfil MEDIUMBLOB,IN u_Contra VARCHAR(30))
 BEGIN 
   SET u_Nombre=IF(u_Nombre='',NULL,u_Nombre),
 	  u_Apellidos=IF(u_Apellidos='',NULL,u_Apellidos),
@@ -54,7 +54,7 @@ DROP PROCEDURE IF EXISTS getAllPosts;
 DELIMITER //
 CREATE PROCEDURE getAllPosts()
 BEGIN 
-  SELECT * FROM Publicaciones WHERE Activo = 1;
+  SELECT CvePubli,Texto,Spoiler,Publicaciones.FechaCreacion, IdUsuario, CONCAT(Nombre, ' ', Apellidos) AS NombreCompleto FROM Publicaciones INNER JOIN Usuarios ON CveUsuario = IdUsuario WHERE Activo = 1 ORDER BY CvePubli DESC;
 END //
 DELIMITER ;
 
@@ -93,4 +93,25 @@ BEGIN
 END //
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS InsertarLike;
+DELIMITER //
+CREATE PROCEDURE InsertarLike(IN u_CvePubli INT, IN u_CveUsuario INT)
+BEGIN 
+   INSERT Likes (IdPubli,IdUsuario) VALUES (u_CvePubli,u_CveUsuario);
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS EliminarLike;
+DELIMITER //
+CREATE PROCEDURE EliminarLike(IN u_CvePubli INT, IN u_CveUsuario INT)
+BEGIN 
+   IF(SELECT COUNT(*) AS TOTAL FROM Likes WHERE IdPubli = u_CvePubli AND  IdUsuario = u_CveUsuario) = 1
+	THEN
+   DELETE FROM Likes WHERE IdPubli = u_CvePubli AND  IdUsuario = u_CveUsuario;
+   SELECT * FROM Publicaciones WHERE CvePubli = u_CvePubli AND Activo = 1;
+   END IF;
+END //
+DELIMITER ;
+
 SELECT * FROM Usuarios;
+SELECT * FROM Publicaciones;

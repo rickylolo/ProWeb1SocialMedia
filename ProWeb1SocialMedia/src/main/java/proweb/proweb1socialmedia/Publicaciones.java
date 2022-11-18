@@ -67,6 +67,7 @@ public class Publicaciones extends HttpServlet {
                 objeto += ",\"NombreCompleto\":\"" + miPublicacion.getNombreCompleto()+ "\"";
                 objeto += ",\"Fecha\":\"" + miPublicacion.getFecha()+ "\"";
                 objeto += ",\"spoiler\":\"" + miPublicacion.getSpoiler()+ "\"";
+                objeto += ",\"TotalLikes\":\"" + miPublicacion.getTotalLikes()+ "\"";
                 objeto += ",\"idUsuario\":\"" + miPublicacion.getIdUsuario()+ "\"";
                 objeto += "}";
                 respuesta += objeto;

@@ -10,7 +10,7 @@ $(document).ready(function () {
   $.ajax(
     //GET DATOS USUARIO
     {
-      url: "http://localhost:8080/Register",
+      url: "http://localhost:8080/Register"
     }
   )
     .done(function (data) {
