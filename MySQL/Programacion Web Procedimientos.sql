@@ -54,7 +54,9 @@ DROP PROCEDURE IF EXISTS getAllPosts;
 DELIMITER //
 CREATE PROCEDURE getAllPosts()
 BEGIN 
-  SELECT CvePubli,Texto,Spoiler,Publicaciones.FechaCreacion, IdUsuario, CONCAT(Nombre, ' ', Apellidos) AS NombreCompleto FROM Publicaciones INNER JOIN Usuarios ON CveUsuario = IdUsuario WHERE Activo = 1 ORDER BY CvePubli DESC;
+  SELECT CvePubli,Texto,Spoiler,Publicaciones.FechaCreacion, Publicaciones.IdUsuario, CONCAT(Nombre, ' ', Apellidos) AS NombreCompleto, (SELECT COUNT(*) FROM Likes WHERE IdPubli = CvePubli) AS TotalLikes FROM Publicaciones 
+  INNER JOIN Usuarios ON CveUsuario = Publicaciones.IdUsuario 
+  WHERE Activo = 1 ORDER BY CvePubli DESC;
 END //
 DELIMITER ;
 
@@ -65,7 +67,7 @@ CREATE PROCEDURE InsertarPublicacion(IN u_Texto VARCHAR(280),IN u_Imagen MEDIUMB
 BEGIN 
    DECLARE u_id int;
    INSERT INTO Publicaciones(Texto,Imagen,Spoiler,IdUsuario,FechaCreacion) 
-   VALUES (u_Texto,u_Imagen,u_Spoiler,u_IdUsuario,u_Activo,DATE(now()));
+   VALUES (u_Texto,u_Imagen,u_Spoiler,u_IdUsuario,u_Activo,now());
    SET u_id = last_insert_id();
    SELECT * FROM Publicaciones WHERE CvePubli = u_id;
 END //
@@ -97,21 +99,40 @@ DROP PROCEDURE IF EXISTS InsertarLike;
 DELIMITER //
 CREATE PROCEDURE InsertarLike(IN u_CvePubli INT, IN u_CveUsuario INT)
 BEGIN 
+   IF(SELECT COUNT(*) AS TOTAL FROM Likes WHERE IdPubli = u_CvePubli AND  IdUsuario = u_CveUsuario) = 0
+	THEN
    INSERT Likes (IdPubli,IdUsuario) VALUES (u_CvePubli,u_CveUsuario);
+      ELSE 
+   DELETE FROM Likes WHERE IdPubli = u_CvePubli AND  IdUsuario = u_CveUsuario;
+   END IF;
+
 END //
 DELIMITER ;
 
-DROP PROCEDURE IF EXISTS EliminarLike;
+
+DROP PROCEDURE IF EXISTS InsertarComentario;
 DELIMITER //
-CREATE PROCEDURE EliminarLike(IN u_CvePubli INT, IN u_CveUsuario INT)
+CREATE PROCEDURE InsertarComentario(IN u_Texto VARCHAR(280),IN u_IdUsuario INT,IN IdPublicacion INT)
 BEGIN 
-   IF(SELECT COUNT(*) AS TOTAL FROM Likes WHERE IdPubli = u_CvePubli AND  IdUsuario = u_CveUsuario) = 1
-	THEN
-   DELETE FROM Likes WHERE IdPubli = u_CvePubli AND  IdUsuario = u_CveUsuario;
-   SELECT * FROM Publicaciones WHERE CvePubli = u_CvePubli AND Activo = 1;
-   END IF;
+   INSERT INTO Comentarios(Texto,IdUsuario,IdPublicacion,FechaCreacion) 
+   VALUES (u_Texto,u_IdUsuario,IdPublicacion,now());
 END //
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS getAllComentariosPost;
+DELIMITER //
+CREATE PROCEDURE getAllComentariosPost(IN u_IdPublicacion INT)
+BEGIN 
+   SELECT CveComentario,Texto,IdUsuario,IdPublicacion,CONCAT("@",NombreUsuario) FROM Comentarios
+   INNER JOIN Usuarios ON CveUsuario = IdUsuario
+   WHERE IdPublicacion = u_IdPublicacion;
+END //
+DELIMITER ;
+
+
+CALL getAllComentariosPost (4);
 
 SELECT * FROM Usuarios;
 SELECT * FROM Publicaciones;
+SELECT * FROM Likes;
+SELECT * FROM Comentarios;

@@ -31,6 +31,7 @@ public class PublicacionDAO {
                   publicacion.setNombreCompleto(resultados.getString("NombreCompleto"));
                   publicacion.setFecha(resultados.getString("FechaCreacion"));
                   publicacion.setTotalLikes(resultados.getString("TotalLikes"));
+                  publicacion.setTotalComentarios(resultados.getString("TotalComentarios"));
                  publicaciones.add(publicacion);
             } 
         }
@@ -45,7 +46,7 @@ public class PublicacionDAO {
         Context ambiente = (Context)contexto.lookup("java:comp/env");
         DataSource infoConexion = (DataSource)ambiente.lookup("jdbc/MeetingPoint");
         Connection conexion = infoConexion.getConnection();
-        PreparedStatement comando = conexion.prepareStatement("CALL InsertarPublicacion(?,?,1,?,1);");
+        PreparedStatement comando = conexion.prepareStatement("CALL InsertarPublicacion(?,?,?);");
         comando.setString(1,miPublicacion.getTexto());
         comando.setBlob(2,miPublicacion.getImagen());
         comando.setInt(3, miPublicacion.getIdUsuario());
@@ -55,9 +56,7 @@ public class PublicacionDAO {
                   publicacion = new PublicacionDTO();
                   publicacion.setId(resultados.getInt("CvePubli"));
                   publicacion.setTexto(resultados.getString("Texto"));
-                  publicacion.setSpoiler(resultados.getBoolean("Spoiler"));
                   publicacion.setIdUsuario(resultados.getInt("IdUsuario"));
-                  publicacion.setActivo(resultados.getBoolean("Activo"));
 
             } 
         }

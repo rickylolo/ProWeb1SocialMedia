@@ -147,7 +147,7 @@
                                 </a>
                             </div>
                             <!------------------- END OF SIDEBAR -------------------->
-                            <label for="create-post" class="btn btn-primary">Crear Publicaciï¿½n</label>
+                            <label for="create-post" class="btn btn-primary">Crear Publicación</label>
                         </div>
                         <!------------------- END OF LEFT -------------------->
 
@@ -161,11 +161,11 @@
                                     <div class="profile-photo">
                                         <img src="/ShowImage">
                                     </div>
-                                    <p class="name">Your Story</p>
+                                    <p class="name">Tu ultima publicación</p>
                                 </div>
                                 <div class="story">
                                     <div class="profile-photo">
-                                        <img src="images/profile-014.png">
+                                        <img src="/ShowImage">
                                     </div>
                                     <p class="name">FCFM UANL (OFICIAL)</p>
                                 </div>
@@ -279,18 +279,18 @@
                         <div class="right">
                             <div class="messages">
                                 <div class="heading">
-                                    <h4>Messages</h4><i class="uil uil-edit"></i>
+                                    <h4>Hashtag</h4><i class="uil uil-comment-alt-search"></i>
                                 </div>
                                 <!------------ SEARCH BAR -------------->
                                 <div class="search-bar">
                                     <i class="uil uil-search"></i>
-                                    <input type="search" placeholder="Search messages" id="message-search">
+                                    <input type="search" placeholder="Buscar hashtags" id="message-search">
                                 </div>
                                 <!------------ MESSAGES CATEGORY -------------->
                                 <div class="category">
-                                    <h6 class="active">Primary</h6>
-                                    <h6>General</h6>
-                                    <h6 class="message-requests">Requests(7)</h6>
+                                    <h6 class="active">+ Recientes</h6>
+                                    <h6 class="active">+ Votadas</h6>
+                                    <h6 class="active">+ Comentadas</h6>
                                 </div>
                                 <!------------ MESSAGE -------------->
                                 <!----- MESSAGE ----->
@@ -345,16 +345,7 @@
                                     </div>
                                 </div>
                                 <!----- MESSAGE ----->
-                                <div class="message">
-                                    <div class="profile-photo">
-                                        <img src="./images/profile-7.jpg">
-                                        <div class="active"></div>
-                                    </div>
-                                    <div class="message-body">
-                                        <h5>Chantel Msiza</h5>
-                                        <p class="text-bold">Birthday Tomorrow!</p>
-                                    </div>
-                                </div>
+                               
                             </div>
                             <!------------ END OF MESSAGES -------------->
 

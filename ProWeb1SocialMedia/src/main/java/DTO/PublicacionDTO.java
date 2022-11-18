@@ -17,7 +17,16 @@ public class PublicacionDTO {
     private String NombreCompleto;
     private String Fecha;
     private String TotalLikes;
+    private String TotalComentarios;
 
+    public String getTotalComentarios() {
+        return TotalComentarios;
+    }
+
+    public void setTotalComentarios(String TotalComentarios) {
+        this.TotalComentarios = TotalComentarios;
+    }
+    
     public String getTotalLikes() {
         return TotalLikes;
     }

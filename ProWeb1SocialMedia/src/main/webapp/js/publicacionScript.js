@@ -20,8 +20,6 @@ $(document).ready(function () {
 
             $("#misPublicaciones").append(
               `
-            
-                   
                       <div class="feed">
                                     <div class="head">
                                         <div class="user">
@@ -34,7 +32,7 @@ $(document).ready(function () {
                                             </div>
                                         </div>
                                         <span class="edit">
-                                            <i class="uil uil-ellipsis-h"></i>
+                                            <i class="uil uil-pen"></i>
                                         </span>
                                     </div>
 
@@ -46,10 +44,10 @@ $(document).ready(function () {
                                         <div class="interaction-buttons" id="MisInteracciones">
                                             <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
                                             <span><i class="uil uil-comment-dots"></i></span>
-                                            <span><i class="uil uil-share-alt"></i></span>
+                                  
                                         </div>
                                         <div class="bookmark">
-                                            <span><i class="uil uil-bookmark-full"></i></span>
+                                            <span><i class="uil uil-eye-slash"></i></span>
                                         </div>
                                     </div>
 
@@ -60,14 +58,63 @@ $(document).ready(function () {
                                     <div class="caption">
                                         <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
                                     </div>
-                                    <div class="comments text-muted">Ver los # comentarios</div>
+                  <br>
+                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+                   <div class="head" id="misComentarios-${data[i].id}"  style="display:block;>
+                 
+                                    </div>
+                                         <div class="head">
+                            <form class="create-post" id="${data[i].id}">
+                                <div class="profile-photo">
+                                    <img src="/ShowImage">
+                                </div>
+                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
+                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
+                                  
+                            </form>
+                                    </div>
+                             
+                            </div>
                                 </div>
                     `
             );
-          }
-          if (i % 10 == 0) {
-            numberPage = i / 10 + 1;
-            Math.trunc(numberPage);
+
+            $.ajax(
+              //Mostrar Comentarios
+              {
+                url: "http://localhost:8080/Comentario",
+                data: { idPublicacion: data[i].id }
+              }
+            )
+              .done(function (data) {
+                  console.log(data);
+               
+ 
+                for (let i = 0; i < data.length; i++) {
+                  let miBusqueda = "#misComentarios-"+data[i].idPublicacion;
+                  $(miBusqueda).append(`
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h5>${data[i].username}</h5> <span class="delete" id="${data[i].idComentario}">
+                                            <i class="uil uil-trash"></i>
+                                        </span>
+                                                <small>${data[i].texto}</small>
+                                            </div>
+                                        </div>
+                                       `);
+                }
+              })
+              .fail(function (data) {
+                console.error(data);
+              });
+
+            if (i % 10 == 0) {
+              numberPage = i / 10 + 1;
+              Math.trunc(numberPage);
+            }
           }
         }
       })
@@ -75,8 +122,9 @@ $(document).ready(function () {
         console.error(data);
       });
   }
-  //  ELIMINAR DINAMICO
-    $("#misPublicaciones").on('click', ".Usuariolike", funcDarLike);
+
+  //  DAR LIKE
+  $("#misPublicaciones").on("click", ".Usuariolike", funcDarLike);
   function funcDarLike() {
     let miIdPublicacion = $(this).parent().parent().attr("id");
     $.ajax(
@@ -84,7 +132,7 @@ $(document).ready(function () {
       {
         url: "http://localhost:8080/Like",
         type: "POST",
-        data: { idPublicacion: miIdPublicacion }
+        data: { idPublicacion: miIdPublicacion },
       }
     )
       .done(function (data) {
@@ -93,5 +141,39 @@ $(document).ready(function () {
       .fail(function (data) {
         console.error(data);
       });
+  }
+  //  COMENTAR
+  $("#misPublicaciones").on(
+    "click",
+    ".insertarComentario",
+    funcInsertComentario
+  );
+  function funcInsertComentario() {
+    let miIdPublicacion = $(this).parent().attr("id");
+    let miComentarioPublicacion = $(this)
+      .parent()
+      .children(".miComentarioTexto")
+      .val();
+    if (miComentarioPublicacion !== "") {
+      $.ajax(
+        //Insertar Comentario
+        {
+          url: "http://localhost:8080/Comentario",
+          type: "POST",
+          data: {
+            idPublicacion: miIdPublicacion,
+            miComentario: miComentarioPublicacion,
+          },
+        }
+      )
+        .done(function (data) {
+          cargarPublicaciones();
+        })
+        .fail(function (data) {
+          console.error(data);
+        });
+    } else {
+      alert("El comentario no puede estar vacío");
+    }
   }
 });
