@@ -16,7 +16,8 @@
 
             <body>
 
-                <input type="hidden" value="${sessionScope[" usuario"].getId()}" id="miUserIdActual">
+                <input type="hidden" value="${sessionScope["usuario"].getId()}" id="miUserIdActual">
+                  <input type="hidden" value="" id="miConsultaActual">
                 <nav>
                     <div class="container">
                         <h2 class="log">
@@ -141,10 +142,17 @@
                                     <span><i class="uil uil-palette"></i></span>
                                     <h3>Tema</h3>
                                 </a>
-                                <a class="menu-item">
-                                    <span><i class="uil uil-setting"></i></span>
-                                    <h3>Configuración</h3>
-                                </a>
+                                 <a class="menu-item">
+                                <form action="/Logout" method="POST" class="miform">
+                                <button type="submit"  class="miform">
+                                    
+                                        <span ><i class="uil uil-sign-out-alt"></i></span>
+                                    <h3>Salir</h3>
+                                  
+                              
+                                    </button>
+                                </form>
+                                 </a>
                             </div>
                             <!------------------- END OF SIDEBAR -------------------->
                             <label for="create-post" class="btn btn-primary">Crear Publicación</label>
@@ -197,7 +205,7 @@
                             <!------------------- END OF STORIES -------------------->
                             <div class="feed">
                                   <!------------------- Insertar Publicacion--------------------->
-                                    <div class="head">
+                                    <div class="head" id="InsertarPublicacion">
                             <form class="create-post" action="/Publicaciones" method="POST"  enctype="multipart/form-data">
                                 <div class="profile-photo">
                                     <img src="/ShowImage">
@@ -214,7 +222,7 @@
                                         <img src="images/noPhoto.jpg" id="img-foto">
                                     </div>
                                   <!------------------- Editar Publicacion --------------------->
-                                                    <div class="head">
+                                                    <div class="head" id="EditarPublicacion">
                             <form class="create-post" action="/Publicaciones" method="POST" id="EditarPost"  enctype="multipart/form-data">
                                 <div class="profile-photo">
                                     <img src="/ShowImage">
@@ -309,9 +317,9 @@
                                 </div>
                                 <!------------ MESSAGES CATEGORY -------------->
                                 <div class="category">
-                                    <h6 class="active">+ Recientes</h6>
-                                    <h6 class="active">+ Votadas</h6>
-                                    <h6 class="active">+ Comentadas</h6>
+                                    <h6 class="active" id="MasRecientes">+ Recientes</h6>
+                                    <h6 class="active" id="MasLikes">+ Votadas</h6>
+                                    <h6 class="active" id="MasComentadas">+ Comentadas</h6>
                                 </div>
                                 <!------------ MESSAGE -------------->
                                 <!----- MESSAGE ----->
@@ -369,60 +377,6 @@
                                
                             </div>
                             <!------------ END OF MESSAGES -------------->
-
-
-                            <!------------ FRIEND REQUESTS -------------->
-                            <div class="friend-requests">
-                                <h4>Requests</h4>
-                                <!----- REQUEST 1----->
-                                <div class="request">
-                                    <div class="info">
-                                        <div class="profile-photo">
-                                            <img src="./images/profile-8.jpg">
-                                        </div>
-                                        <div>
-                                            <h5>Hajia Bintu</h5>
-                                            <p class="text-muted">8 mutual friends</p>
-                                        </div>
-                                    </div>
-                                    <div class="action">
-                                        <button class="btn btn-primary">Accept</button>
-                                        <button class="btn">Decline</button>
-                                    </div>
-                                </div>
-                                <!----- REQUEST 2----->
-                                <div class="request">
-                                    <div class="info">
-                                        <div class="profile-photo">
-                                            <img src="./images/profile-9.jpg">
-                                        </div>
-                                        <div>
-                                            <h5>Jackline Mensah</h5>
-                                            <p class="text-muted">2 mutual friends</p>
-                                        </div>
-                                    </div>
-                                    <div class="action">
-                                        <button class="btn btn-primary">Accept</button>
-                                        <button class="btn">Decline</button>
-                                    </div>
-                                </div>
-                                <!----- REQUEST 3----->
-                                <div class="request">
-                                    <div class="info">
-                                        <div class="profile-photo">
-                                            <img src="./images/profile-10.jpg">
-                                        </div>
-                                        <div>
-                                            <h5>Jennifer Lawrence</h5>
-                                            <p class="text-muted">19 mutual friends</p>
-                                        </div>
-                                    </div>
-                                    <div class="action">
-                                        <button class="btn btn-primary">Accept</button>
-                                        <button class="btn">Decline</button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <!--====================== END OF RIGHT ==========================-->
