@@ -26,7 +26,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-public class Publicaciones extends HttpServlet {
+public class PublicacionId extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -50,7 +50,8 @@ public class Publicaciones extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            ArrayList<PublicacionDTO> resultados = PublicacionDAO.consultar();
+            int idPublicacion = Integer.parseInt(request.getParameter("id"));
+            ArrayList<PublicacionDTO> resultados = PublicacionDAO.consultarId(idPublicacion);
             response.setContentType("application/json;charset=UTF-8");
             String respuesta = "[";
             boolean esPrimero = true;
@@ -77,7 +78,7 @@ public class Publicaciones extends HttpServlet {
             respuesta += "]";
             response.getWriter().print(respuesta);
         } catch (NamingException | SQLException ex) {
-            Logger.getLogger(Publicaciones.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PublicacionId.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -85,66 +86,6 @@ public class Publicaciones extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String accion = "";
-        PublicacionDTO miPublicacion = new PublicacionDTO();
-         DiskFileItemFactory factory = new DiskFileItemFactory();
-            ServletFileUpload upload = new ServletFileUpload(factory);
-            List<FileItem> items;
-        try {
-            items = upload.parseRequest(request);
-            InputStream stream = null;
-            for(FileItem item : items){
-                if(!item.isFormField()){
-                    stream = item.getInputStream();
-                    miPublicacion.setImagen(stream);
-             
-          
-                }
-                else{
-                     String fieldName = item.getFieldName();
-                     String fieldValue = item.getString();
-                     
-                     switch(fieldName){
-                         
-                         case "texto":
-                               miPublicacion.setTexto(fieldValue);
-                             break;
-                             
-                         case "idPublicacion":
-                               miPublicacion.setId(Integer.parseInt(fieldValue));
-                             break;
-                     
-                         case "accion":
-                             accion=fieldValue;
-                             break;
-                     
-                     } 
-                }
-            }
-          
-            HttpSession session=request.getSession();
-            UserDTO user=(UserDTO)session.getAttribute("usuario");
-            int iduser = user.getId();
-            miPublicacion.setIdUsuario(iduser);
-            if(accion.equals("insertar")){
-                PublicacionDAO.insertar(miPublicacion);
-                stream.close();
-            }
-               
-            if(accion.equals("actualizar")){
-               PublicacionDAO.actualizar(miPublicacion);
-                stream.close();
-            }
-               
-            if(accion.equals("eliminar")){
-               PublicacionDAO.eliminar(miPublicacion);   
-            }
-            
-            
-            
-        } catch (FileUploadException | NamingException | SQLException ex) {
-            Logger.getLogger(Publicaciones.class.getName()).log(Level.SEVERE, null, ex);
-        }
         request.getRequestDispatcher("/mainPage.jsp").forward(request,response);
 
     }

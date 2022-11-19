@@ -196,6 +196,7 @@
                             </div>
                             <!------------------- END OF STORIES -------------------->
                             <div class="feed">
+                                  <!------------------- Insertar Publicacion--------------------->
                                     <div class="head">
                             <form class="create-post" action="/Publicaciones" method="POST"  enctype="multipart/form-data">
                                 <div class="profile-photo">
@@ -211,6 +212,24 @@
                                     </div>
                                  <div class="photo" id="miFotoCargada">
                                         <img src="images/noPhoto.jpg" id="img-foto">
+                                    </div>
+                                  <!------------------- Editar Publicacion --------------------->
+                                                    <div class="head">
+                            <form class="create-post" action="/Publicaciones" method="POST" id="EditarPost"  enctype="multipart/form-data">
+                                <div class="profile-photo">
+                                    <img src="/ShowImage">
+                                </div>
+                                 <input type="hidden" name="accion" value="actualizar">
+                                 <input type="hidden" name="idPublicacion" id="idPublicacionEdit"  value="actualizar">
+                                <input type="text" name="texto" id="miTextoEditar">
+                                 <label class="btn" for="file-input-edit"><i class="uil uil-camera-plus"></i></label>
+                                   <input id="file-input-edit" style="display:none;" onchange="vista_preliminar2(event)" name="foto-edit" type="file">
+                                <button type="submit" class="btn btn-primary">Actualizar</button>
+                                  
+                            </form>
+                                    </div>
+                                 <div class="photo" id="miFotoCargada-Edit">
+                                        <img src="images/noPhoto.jpg" id="img-foto-edit">
                                     </div>
                             </div>
 
@@ -270,6 +289,8 @@
                               
                      
                             </div>
+                                   <input type="hidden" value="5" id="miTotalDePublicacionesCargadas">
+                                   <Button class="btn btn-primary" type="button"id="CargarMas" >Cargar Mas</button>
                             <!------------------------------- END OF FEEDS ------------------------------------>
                         </div>
                         <!--======================== END OF MIDDLE ==========================-->
@@ -277,7 +298,7 @@
 
                         <!--======================== RIGHT ==========================-->
                         <div class="right">
-                            <div class="messages">
+                            <div class="messages" id="misUsuarios">
                                 <div class="heading">
                                     <h4>Hashtag</h4><i class="uil uil-comment-alt-search"></i>
                                 </div>

@@ -17,6 +17,10 @@
         <servlet-class>proweb.proweb1socialmedia.Publicaciones</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>PublicacionId</servlet-name>
+        <servlet-class>proweb.proweb1socialmedia.PublicacionId</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ShowImage</servlet-name>
         <servlet-class>proweb.proweb1socialmedia.ShowImage</servlet-class>
     </servlet>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>Publicaciones</servlet-name>
         <url-pattern>/Publicaciones</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PublicacionId</servlet-name>
+        <url-pattern>/PublicacionId</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ShowImage</servlet-name>

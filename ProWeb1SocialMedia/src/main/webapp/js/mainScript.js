@@ -2,6 +2,7 @@ $(document).ready(function () {
     
   $("#miEditPerfil").hide();
  $("#miFotoCargada").hide();
+ $("#miFotoCargada-Edit").hide();
   $("#pfp-abrir").click(funcMostrarEditPerfil);
   function funcMostrarEditPerfil() {
     $("#miEditPerfil").toggle();
@@ -14,7 +15,6 @@ $(document).ready(function () {
     }
   )
     .done(function (data) {
-      console.log(data);
       $("#miNombreLoged").text(data[0].name);
       $("#miUsuarioLoged").text("@" + data[0].username);
       $("#name").val(data[0].name);
@@ -47,3 +47,16 @@ let vista_preliminar = (event)=>{
   leer_img.readAsDataURL(event.target.files[0])
 }
 
+let vista_preliminar2 = (event)=>{
+    $("#miFotoCargada-Edit").show();
+  let leer_img = new FileReader();
+  let id_img = document.getElementById('img-foto-edit');
+
+  leer_img.onload =() =>{
+    if(leer_img.readyState==2){
+      id_img.src = leer_img.result
+    }
+  }
+
+  leer_img.readAsDataURL(event.target.files[0])
+}

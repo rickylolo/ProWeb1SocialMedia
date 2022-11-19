@@ -18,6 +18,15 @@ public class PublicacionDTO {
     private String Fecha;
     private String TotalLikes;
     private String TotalComentarios;
+    private int isImagen;
+
+    public int getIsImagen() {
+        return isImagen;
+    }
+
+    public void setIsImagen(int isImagen) {
+        this.isImagen = isImagen;
+    }
 
     public String getTotalComentarios() {
         return TotalComentarios;
