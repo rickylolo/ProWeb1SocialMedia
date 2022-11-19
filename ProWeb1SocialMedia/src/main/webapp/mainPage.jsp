@@ -25,7 +25,7 @@
                         </h2>
                         <div class="search-bar">
                             <i class="uil uil-search"></i>
-                            <input type="search" placeholder="Buscar publicaciones">
+                            <input type="search" id="postSearch" placeholder="Buscar publicaciones">
                         </div>
                         <div class="create">
               

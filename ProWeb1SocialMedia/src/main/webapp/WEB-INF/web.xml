@@ -52,6 +52,14 @@
         <servlet-name>PublicacionesComentarios</servlet-name>
         <servlet-class>proweb.proweb1socialmedia.PublicacionesComentarios</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PublicacionesSearch</servlet-name>
+        <servlet-class>proweb.proweb1socialmedia.PublicacionesSearch</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeletePost</servlet-name>
+        <servlet-class>proweb.proweb1socialmedia.DeletePost</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -103,6 +111,14 @@
     <servlet-mapping>
         <servlet-name>PublicacionesComentarios</servlet-name>
         <url-pattern>/PublicacionesComentarios</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PublicacionesSearch</servlet-name>
+        <url-pattern>/PublicacionesSearch</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeletePost</servlet-name>
+        <url-pattern>/DeletePost</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

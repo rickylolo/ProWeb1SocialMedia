@@ -54,20 +54,49 @@ DROP PROCEDURE IF EXISTS getAllPosts;
 DELIMITER //
 CREATE PROCEDURE getAllPosts()
 BEGIN 
-  SELECT CvePubli,Texto,Spoiler,Publicaciones.FechaCreacion, Publicaciones.IdUsuario, CONCAT(Nombre, ' ', Apellidos) AS NombreCompleto, (SELECT COUNT(*) FROM Likes WHERE IdPubli = CvePubli) AS TotalLikes FROM Publicaciones 
+  SELECT CvePubli,Texto,Spoiler,Publicaciones.FechaCreacion, Publicaciones.IdUsuario,IF(Imagen='',0,1) AS isImagen, CONCAT(Nombre, ' ', Apellidos) AS NombreCompleto, (SELECT COUNT(*) FROM Likes WHERE IdPubli = CvePubli) AS TotalLikes, (SELECT COUNT(*) FROM Comentarios WHERE IdPublicacion = CvePubli) AS TotalComentarios FROM Publicaciones 
   INNER JOIN Usuarios ON CveUsuario = Publicaciones.IdUsuario 
   WHERE Activo = 1 ORDER BY CvePubli DESC;
 END //
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS getPostId;
+DELIMITER //
+CREATE PROCEDURE getPostId(IN u_CvaPubli INT)
+BEGIN 
+  SELECT CvePubli,Texto,Spoiler,Publicaciones.FechaCreacion, Publicaciones.IdUsuario,IF(Imagen='',0,1) AS isImagen, CONCAT(Nombre, ' ', Apellidos) AS NombreCompleto, (SELECT COUNT(*) FROM Likes WHERE IdPubli = CvePubli) AS TotalLikes, (SELECT COUNT(*) FROM Comentarios WHERE IdPublicacion = CvePubli) AS TotalComentarios FROM Publicaciones 
+  INNER JOIN Usuarios ON CveUsuario = Publicaciones.IdUsuario 
+  WHERE Activo = 1 AND CvePubli = u_CvaPubli;
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS getAllPostsOrderByLikes;
+DELIMITER //
+CREATE PROCEDURE getAllPostsOrderByLikes()
+BEGIN 
+  SELECT CvePubli,Texto,Spoiler,Publicaciones.FechaCreacion, Publicaciones.IdUsuario,IF(Imagen='',0,1) AS isImagen, CONCAT(Nombre, ' ', Apellidos) AS NombreCompleto, (SELECT COUNT(*) FROM Likes WHERE IdPubli = CvePubli) AS TotalLikes, (SELECT COUNT(*) FROM Comentarios WHERE IdPublicacion = CvePubli) AS TotalComentarios FROM Publicaciones 
+  INNER JOIN Usuarios ON CveUsuario = Publicaciones.IdUsuario 
+  WHERE Activo = 1 ORDER BY TotalLikes DESC;
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS getAllPostsOrderByComments;
+DELIMITER //
+CREATE PROCEDURE getAllPostsOrderByComments()
+BEGIN 
+  SELECT CvePubli,Texto,Spoiler,Publicaciones.FechaCreacion, Publicaciones.IdUsuario,IF(Imagen='',0,1) AS isImagen, CONCAT(Nombre, ' ', Apellidos) AS NombreCompleto, (SELECT COUNT(*) FROM Likes WHERE IdPubli = CvePubli) AS TotalLikes, (SELECT COUNT(*) FROM Comentarios WHERE IdPublicacion = CvePubli) AS TotalComentarios FROM Publicaciones 
+  INNER JOIN Usuarios ON CveUsuario = Publicaciones.IdUsuario 
+  WHERE Activo = 1 ORDER BY TotalComentarios DESC;
+END //
+DELIMITER ;
 
 DROP PROCEDURE IF EXISTS InsertarPublicacion;
 DELIMITER //
-CREATE PROCEDURE InsertarPublicacion(IN u_Texto VARCHAR(280),IN u_Imagen MEDIUMBLOB, IN u_Spoiler BIT,IN u_IdUsuario INT)
+CREATE PROCEDURE InsertarPublicacion(IN u_Texto VARCHAR(280),IN u_Imagen MEDIUMBLOB,IN u_IdUsuario INT)
 BEGIN 
    DECLARE u_id int;
-   INSERT INTO Publicaciones(Texto,Imagen,Spoiler,IdUsuario,FechaCreacion) 
-   VALUES (u_Texto,u_Imagen,u_Spoiler,u_IdUsuario,u_Activo,now());
+   INSERT INTO Publicaciones(Texto,Imagen,IdUsuario,FechaCreacion) 
+   VALUES (u_Texto,u_Imagen,u_IdUsuario,now());
    SET u_id = last_insert_id();
    SELECT * FROM Publicaciones WHERE CvePubli = u_id;
 END //
@@ -76,12 +105,11 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS ActualizarPublicacion;
 DELIMITER //
-CREATE PROCEDURE ActualizarPublicacion(IN u_CvePubli INT,IN u_Texto VARCHAR(280),IN u_Imagen MEDIUMBLOB,IN u_Spoiler BIT)
+CREATE PROCEDURE ActualizarPublicacion(IN u_CvePubli INT,IN u_Texto VARCHAR(280),IN u_Imagen MEDIUMBLOB)
 BEGIN 
    SET u_Texto=IF(u_Texto='',NULL,u_Texto),
-			u_Imagen=IF(u_Imagen='',NULL,u_Imagen),
-            u_Spoiler=IF(u_Spoiler='',NULL,u_Spoiler);
-   UPDATE Publicaciones SET Texto = u_Texto, Imagen= u_Imagen, Spoiler = u_Spoiler WHERE CvePubli = u_CvePubli;
+			u_Imagen=IF(u_Imagen='',NULL,u_Imagen);
+   UPDATE Publicaciones SET Texto = u_Texto, Imagen= u_Imagen WHERE CvePubli = u_CvePubli;
    SELECT * FROM Publicaciones WHERE CvePubli = u_CvePubli AND Activo = 1;
 END //
 DELIMITER ;
@@ -91,7 +119,6 @@ DELIMITER //
 CREATE PROCEDURE EliminarPublicacion(IN u_CvePubli INT)
 BEGIN 
    UPDATE Publicaciones SET Activo = 0 WHERE CvePubli = u_CvePubli;
-   SELECT * FROM Publicaciones WHERE CvePubli = u_CvePubli AND Activo = 1;
 END //
 DELIMITER ;
 
@@ -123,15 +150,30 @@ DROP PROCEDURE IF EXISTS getAllComentariosPost;
 DELIMITER //
 CREATE PROCEDURE getAllComentariosPost(IN u_IdPublicacion INT)
 BEGIN 
-   SELECT CveComentario,Texto,IdUsuario,IdPublicacion,CONCAT("@",NombreUsuario) FROM Comentarios
+   SELECT CveComentario,Texto,IdUsuario,Spoiler,IdPublicacion,CONCAT("@",NombreUsuario) AS Username FROM Comentarios
    INNER JOIN Usuarios ON CveUsuario = IdUsuario
    WHERE IdPublicacion = u_IdPublicacion;
 END //
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS searchPosts;
+DELIMITER //
+CREATE PROCEDURE searchPosts(IN u_texto varchar(50),IN u_hashtag varchar(30))
+BEGIN 
+ SELECT CvePubli,Texto,Spoiler,Publicaciones.FechaCreacion, Publicaciones.IdUsuario,IF(Imagen='',0,1) AS isImagen, CONCAT(Nombre, ' ', Apellidos) AS NombreCompleto, (SELECT COUNT(*) FROM Likes WHERE IdPubli = CvePubli) AS TotalLikes, (SELECT COUNT(*) FROM Comentarios WHERE IdPublicacion = CvePubli) AS TotalComentarios 
+ FROM Publicaciones 
+  INNER JOIN Usuarios ON CveUsuario = Publicaciones.IdUsuario 
+  WHERE Activo = 1 
+	AND (u_text = "" OR u_texto IS NULL OR Texto LIKE CONCAT("%",u_texto,"%")) 
+    AND (u_hashtag = "" OR u_hashtag IS NULL OR Texto LIKE CONCAT("%#",u_hashtag,"%")) 
+    ORDER BY CvePubli DESC;
 
-CALL getAllComentariosPost (4);
+END //
+DELIMITER ;
 
+
+CALL getPostId (4);
+CALL searchPosts ("oLa",NULL);
 SELECT * FROM Usuarios;
 SELECT * FROM Publicaciones;
 SELECT * FROM Likes;

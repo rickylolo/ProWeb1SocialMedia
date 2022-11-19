@@ -97,6 +97,36 @@ public class PublicacionDAO {
         return publicaciones;      
     }
     
+     public static ArrayList<PublicacionDTO> consultarSearch(String texto,String hashtag) throws NamingException, SQLException{
+        ArrayList<PublicacionDTO> publicaciones = new ArrayList<>();
+        Context contexto = new InitialContext();
+        Context ambiente = (Context)contexto.lookup("java:comp/env");
+        DataSource infoConexion = (DataSource)ambiente.lookup("jdbc/MeetingPoint");
+        Connection conexion = infoConexion.getConnection();
+        PreparedStatement comando = conexion.prepareStatement("CALL searchPosts(?,?);");
+        comando.setString(1, texto);
+        comando.setString(2, hashtag);
+        if(comando.execute()){
+            ResultSet resultados = comando.getResultSet();
+            while(resultados.next()){
+                 PublicacionDTO publicacion = new PublicacionDTO();
+                  publicacion.setId(resultados.getInt("CvePubli"));
+                  publicacion.setTexto(resultados.getString("Texto"));
+                  publicacion.setSpoiler(resultados.getBoolean("Spoiler"));
+                  publicacion.setIdUsuario(resultados.getInt("IdUsuario"));
+                  publicacion.setNombreCompleto(resultados.getString("NombreCompleto"));
+                  publicacion.setFecha(resultados.getString("FechaCreacion"));
+                  publicacion.setTotalLikes(resultados.getString("TotalLikes"));
+                  publicacion.setIsImagen(resultados.getInt("isImagen"));
+                  publicacion.setTotalComentarios(resultados.getString("TotalComentarios"));
+                 publicaciones.add(publicacion);
+            } 
+        }
+        comando.close();
+        conexion.close();
+        return publicaciones;      
+    }
+    
      public static ArrayList<PublicacionDTO> consultarId(int idPublicacion) throws NamingException, SQLException{
         ArrayList<PublicacionDTO> publicaciones = new ArrayList<>();
         Context contexto = new InitialContext();

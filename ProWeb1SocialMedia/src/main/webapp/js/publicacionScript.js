@@ -11,11 +11,10 @@ $(document).ready(function () {
       }
     )
       .done(function (data) {
-        let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();  
-  
+        let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();
+
         let miIdUsuario = $("#miUserIdActual").val();
 
-       
         $("#misPublicaciones").empty();
         for (let i = 0; i < data.length; i++) {
           if (i < totalPublicaciones) {
@@ -24,11 +23,10 @@ $(document).ready(function () {
               /#([A-Za-z]+)/g,
               '#<a href="#" class="hash">$1</a>'
             );
-            if(miIdUsuario == data[i].idUsuario){
-                
-            if (data[i].isImagen != 1) {
-              $("#misPublicaciones").append(
-                `
+            if (miIdUsuario == data[i].idUsuario) {
+              if (data[i].isImagen != 1) {
+                $("#misPublicaciones").append(
+                  `
                       <div class="feed">
                                     <div class="head">
                                         <div class="user">
@@ -42,6 +40,9 @@ $(document).ready(function () {
                                         </div>
                                         <a class="edit" id="${data[i].idUsuario}" href="#">
                                             <h3><i class="uil uil-pen"></i></h3>
+                                        </a>
+                                        <a class="delete" id="${data[i].id}">
+                                            <h3><i class="uil uil-trash-alt"></i></h3>
                                         </a>
                                     </div>
 
@@ -86,10 +87,10 @@ $(document).ready(function () {
                             </div>
                                 </div>
                     `
-              );
-            } else {
-              $("#misPublicaciones").append(
-                `
+                );
+              } else {
+                $("#misPublicaciones").append(
+                  `
                       <div class="feed">
                                     <div class="head">
                                         <div class="user">
@@ -103,6 +104,9 @@ $(document).ready(function () {
                                         </div>
                                         <a class="edit"  href="#" id="${data[i].idUsuario}">
                                            <h3><i class="uil uil-pen" ></i></h3>
+                                        </a>
+                                        <a class="delete" id="${data[i].id}">
+                                            <h3><i class="uil uil-trash-alt"></i></h3>
                                         </a>
                                     </div>
 
@@ -147,13 +151,12 @@ $(document).ready(function () {
                             </div>
                                 </div>
                     `
-              );
-              
-            }
-            }else{
-                  if (data[i].isImagen != 1) {
-              $("#misPublicaciones").append(
-                `
+                );
+              }
+            } else {
+              if (data[i].isImagen != 1) {
+                $("#misPublicaciones").append(
+                  `
                       <div class="feed">
                                     <div class="head">
                                         <div class="user">
@@ -208,10 +211,10 @@ $(document).ready(function () {
                             </div>
                                 </div>
                     `
-              );
-            } else {
-              $("#misPublicaciones").append(
-                `
+                );
+              } else {
+                $("#misPublicaciones").append(
+                  `
                       <div class="feed">
                                     <div class="head">
                                         <div class="user">
@@ -266,24 +269,21 @@ $(document).ready(function () {
                             </div>
                                 </div>
                     `
-              );
-              
-            }
+                );
+              }
             }
             $.ajax(
               //Mostrar Comentarios
               {
                 url: "http://localhost:8080/Comentario",
-                data: { idPublicacion: data[i].id }
+                data: { idPublicacion: data[i].id },
               }
             )
               .done(function (data) {
- 
-
                 for (let i = 0; i < data.length; i++) {
                   let miBusqueda = "#misComentarios-" + data[i].idPublicacion;
-           if(miIdUsuario == data[i].idUsuario){
-                  $(miBusqueda).append(`
+                  if (miIdUsuario == data[i].idUsuario) {
+                    $(miBusqueda).append(`
                                         <div class="user">
                                             <div class="profile-photo">
                                                 <img src="/ShowImageUser?id=${data[i].idUsuario}">
@@ -296,8 +296,8 @@ $(document).ready(function () {
                                             </div>
                                         </div>
                                        `);
-                      }else{
-                                    $(miBusqueda).append(`
+                  } else {
+                    $(miBusqueda).append(`
                                         <div class="user">
                                             <div class="profile-photo">
                                                 <img src="/ShowImageUser?id=${data[i].idUsuario}">
@@ -308,9 +308,9 @@ $(document).ready(function () {
                                             </div>
                                         </div>
                                        `);
-                      }
-                      
-                  $(miBusqueda).children(".user").hide();  
+                  }
+
+                  $(miBusqueda).children(".user").hide();
                 }
               })
               .fail(function (data) {
@@ -328,7 +328,7 @@ $(document).ready(function () {
         console.error(data);
       });
   }
- function cargarPublicacionesLikes() {
+  function cargarPublicacionesLikes() {
     $.ajax(
       //GET DATOS PUBLICACIONES
       {
@@ -336,11 +336,10 @@ $(document).ready(function () {
       }
     )
       .done(function (data) {
-        let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();  
-  
+        let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();
+
         let miIdUsuario = $("#miUserIdActual").val();
 
-       
         $("#misPublicaciones").empty();
         for (let i = 0; i < data.length; i++) {
           if (i < totalPublicaciones) {
@@ -349,11 +348,10 @@ $(document).ready(function () {
               /#([A-Za-z]+)/g,
               '#<a href="#" class="hash">$1</a>'
             );
-            if(miIdUsuario == data[i].idUsuario){
-                
-            if (data[i].isImagen != 1) {
-              $("#misPublicaciones").append(
-                `
+            if (miIdUsuario == data[i].idUsuario) {
+              if (data[i].isImagen != 1) {
+                $("#misPublicaciones").append(
+                  `
                       <div class="feed">
                                     <div class="head">
                                         <div class="user">
@@ -411,10 +409,10 @@ $(document).ready(function () {
                             </div>
                                 </div>
                     `
-              );
-            } else {
-              $("#misPublicaciones").append(
-                `
+                );
+              } else {
+                $("#misPublicaciones").append(
+                  `
                       <div class="feed">
                                     <div class="head">
                                         <div class="user">
@@ -472,13 +470,12 @@ $(document).ready(function () {
                             </div>
                                 </div>
                     `
-              );
-              
-            }
-            }else{
-                  if (data[i].isImagen != 1) {
-              $("#misPublicaciones").append(
-                `
+                );
+              }
+            } else {
+              if (data[i].isImagen != 1) {
+                $("#misPublicaciones").append(
+                  `
                       <div class="feed">
                                     <div class="head">
                                         <div class="user">
@@ -533,10 +530,10 @@ $(document).ready(function () {
                             </div>
                                 </div>
                     `
-              );
-            } else {
-              $("#misPublicaciones").append(
-                `
+                );
+              } else {
+                $("#misPublicaciones").append(
+                  `
                       <div class="feed">
                                     <div class="head">
                                         <div class="user">
@@ -591,24 +588,21 @@ $(document).ready(function () {
                             </div>
                                 </div>
                     `
-              );
-              
-            }
+                );
+              }
             }
             $.ajax(
               //Mostrar Comentarios
               {
                 url: "http://localhost:8080/Comentario",
-                data: { idPublicacion: data[i].id }
+                data: { idPublicacion: data[i].id },
               }
             )
-               .done(function (data) {
- 
-
+              .done(function (data) {
                 for (let i = 0; i < data.length; i++) {
                   let miBusqueda = "#misComentarios-" + data[i].idPublicacion;
-           if(miIdUsuario == data[i].idUsuario){
-                  $(miBusqueda).append(`
+                  if (miIdUsuario == data[i].idUsuario) {
+                    $(miBusqueda).append(`
                                         <div class="user">
                                             <div class="profile-photo">
                                                 <img src="/ShowImageUser?id=${data[i].idUsuario}">
@@ -621,8 +615,8 @@ $(document).ready(function () {
                                             </div>
                                         </div>
                                        `);
-                      }else{
-                                    $(miBusqueda).append(`
+                  } else {
+                    $(miBusqueda).append(`
                                         <div class="user">
                                             <div class="profile-photo">
                                                 <img src="/ShowImageUser?id=${data[i].idUsuario}">
@@ -633,9 +627,9 @@ $(document).ready(function () {
                                             </div>
                                         </div>
                                        `);
-                      }
-                      
-                  $(miBusqueda).children(".user").hide();  
+                  }
+
+                  $(miBusqueda).children(".user").hide();
                 }
               })
               .fail(function (data) {
@@ -653,7 +647,7 @@ $(document).ready(function () {
         console.error(data);
       });
   }
- function cargarPublicacionesComentarios() {
+  function cargarPublicacionesComentarios() {
     $.ajax(
       //GET DATOS PUBLICACIONES
       {
@@ -661,11 +655,10 @@ $(document).ready(function () {
       }
     )
       .done(function (data) {
-        let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();  
-  
+        let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();
+
         let miIdUsuario = $("#miUserIdActual").val();
 
-       
         $("#misPublicaciones").empty();
         for (let i = 0; i < data.length; i++) {
           if (i < totalPublicaciones) {
@@ -674,11 +667,10 @@ $(document).ready(function () {
               /#([A-Za-z]+)/g,
               '#<a href="#" class="hash">$1</a>'
             );
-            if(miIdUsuario == data[i].idUsuario){
-                
-            if (data[i].isImagen != 1) {
-              $("#misPublicaciones").append(
-                `
+            if (miIdUsuario == data[i].idUsuario) {
+              if (data[i].isImagen != 1) {
+                $("#misPublicaciones").append(
+                  `
                       <div class="feed">
                                     <div class="head">
                                         <div class="user">
@@ -736,10 +728,10 @@ $(document).ready(function () {
                             </div>
                                 </div>
                     `
-              );
-            } else {
-              $("#misPublicaciones").append(
-                `
+                );
+              } else {
+                $("#misPublicaciones").append(
+                  `
                       <div class="feed">
                                     <div class="head">
                                         <div class="user">
@@ -797,13 +789,12 @@ $(document).ready(function () {
                             </div>
                                 </div>
                     `
-              );
-              
-            }
-            }else{
-                  if (data[i].isImagen != 1) {
-              $("#misPublicaciones").append(
-                `
+                );
+              }
+            } else {
+              if (data[i].isImagen != 1) {
+                $("#misPublicaciones").append(
+                  `
                       <div class="feed">
                                     <div class="head">
                                         <div class="user">
@@ -858,10 +849,10 @@ $(document).ready(function () {
                             </div>
                                 </div>
                     `
-              );
-            } else {
-              $("#misPublicaciones").append(
-                `
+                );
+              } else {
+                $("#misPublicaciones").append(
+                  `
                       <div class="feed">
                                     <div class="head">
                                         <div class="user">
@@ -916,24 +907,21 @@ $(document).ready(function () {
                             </div>
                                 </div>
                     `
-              );
-              
-            }
+                );
+              }
             }
             $.ajax(
               //Mostrar Comentarios
               {
                 url: "http://localhost:8080/Comentario",
-                data: { idPublicacion: data[i].id }
+                data: { idPublicacion: data[i].id },
               }
             )
-                .done(function (data) {
- 
-
+              .done(function (data) {
                 for (let i = 0; i < data.length; i++) {
                   let miBusqueda = "#misComentarios-" + data[i].idPublicacion;
-           if(miIdUsuario == data[i].idUsuario){
-                  $(miBusqueda).append(`
+                  if (miIdUsuario == data[i].idUsuario) {
+                    $(miBusqueda).append(`
                                         <div class="user">
                                             <div class="profile-photo">
                                                 <img src="/ShowImageUser?id=${data[i].idUsuario}">
@@ -946,8 +934,8 @@ $(document).ready(function () {
                                             </div>
                                         </div>
                                        `);
-                      }else{
-                                    $(miBusqueda).append(`
+                  } else {
+                    $(miBusqueda).append(`
                                         <div class="user">
                                             <div class="profile-photo">
                                                 <img src="/ShowImageUser?id=${data[i].idUsuario}">
@@ -958,9 +946,9 @@ $(document).ready(function () {
                                             </div>
                                         </div>
                                        `);
-                      }
-                      
-                  $(miBusqueda).children(".user").hide();  
+                  }
+
+                  $(miBusqueda).children(".user").hide();
                 }
               })
               .fail(function (data) {
@@ -982,13 +970,11 @@ $(document).ready(function () {
   $("#misPublicaciones").on("click", ".Usuariolike", funcDarLike);
   function funcDarLike() {
     let miIdPublicacion = $(this).parent().parent().attr("id");
-    $.ajax(
-      {
-        url: "http://localhost:8080/Like",
-        type: "POST",
-        data: { idPublicacion: miIdPublicacion },
-      }
-    )
+    $.ajax({
+      url: "http://localhost:8080/Like",
+      type: "POST",
+      data: { idPublicacion: miIdPublicacion },
+    })
       .done(function (data) {
         cargarPublicaciones();
       })
@@ -1000,7 +986,6 @@ $(document).ready(function () {
   //  OCULTAR-MOSTRAR COMENTARIOS
   $("#misPublicaciones").on("click", ".comments", funcOcultarComentarios);
   function funcOcultarComentarios() {
-
     $(this).parent().children(".mostrarComentarios").children(".user").toggle();
   }
   //  COMENTAR
@@ -1037,103 +1022,1054 @@ $(document).ready(function () {
       alert("El comentario no puede estar vacío");
     }
   }
-  
-  $("#CargarMas").click(function()
-  {
-      let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();  
-      let consultaCasos = $("#miConsultaActual").val(); 
-      totalPublicaciones = totalPublicaciones + 5;
-      $("#miTotalDePublicacionesCargadas").val(totalPublicaciones);
-      switch(consultaCasos){
-          case "Recientes":
-          cargarPublicaciones();
-          break;
-           case "Likes":
-          cargarPublicacionesLikes();
-          break;
-           case "Comentarios":
-          cargarPublicacionesComentarios();
-          break;
-      }
-      
-  });
-  
-    //  EDITAR PUBLICACION
-  $("#misPublicaciones").on("click", ".edit", funcEditarPublicaciones);
-  function funcEditarPublicaciones() {
-      let idPublicacion = $(this).parent().parent().children(".action-buttons").attr("id");
-      $("#idPublicacionEdit").val(idPublicacion);
-      $.ajax(
-      {
-        url: "http://localhost:8080/PublicacionId",
-        data: { id: idPublicacion }
-      }
-    )
-      .done(function (data) {
-          
-        $("#miTextoEditar").val(data[0].texto);
-        $("#miFotoCargada-Edit").show();
-        $("#img-foto-edit").attr("src","/ShowImagePost?id=" + data[0].id);
-        $("#InsertarPublicacion").hide();
-        $("#EditarPublicacion").show();
-      })
-      .fail(function (data) {
-        console.error(data);
-      });
-     
-  }
-  
-  
-    //  ELIMINAR PUBLICACION   PENDIENTEE
-  $("#misPublicaciones").on("click", ".delete", funcEliminarPublicacion);
-  function funcEliminarPublicacion() {
-      let idPublicacion = $(this).parent().parent().children(".action-buttons").attr("id");
-      if(confirm("¿Estas seguro de eliminar esta publicación?")){
-            $.ajax(
-      {
-        url: "http://localhost:8080/PublicacionId",
-        data: { accion: "eliminar",id: idPublicacion }
-      }
-    )
-      .done(function (data) {
-          
-        $("#miTextoEditar").val(data[0].texto);
-        $("#miFotoCargada-Edit").show();
-        $("#img-foto-edit").attr("src","/ShowImagePost?id=" + data[0].id);
-        $("#InsertarPublicacion").hide();
-        $("#EditarPublicacion").show();
-      })
-      .fail(function (data) {
-        console.error(data);
-      });
-      }
-    
-     
-  }
- 
- //Mas Recientes
- $("#MasRecientes").click(function()
-  {
-      $("#miConsultaActual").val("Recientes");
-      $("#miTotalDePublicacionesCargadas").val("5");
-      cargarPublicaciones();
-  });
-  
-   //Mas Likes
- $("#MasLikes").click(function()
-  {
-      $("#miConsultaActual").val("Likes");
-       $("#miTotalDePublicacionesCargadas").val("5");
-      cargarPublicacionesLikes();
-  });
-  
-    //Mas Comentadas
- $("#MasComentadas").click(function()
-  {
-      $("#miConsultaActual").val("Comentarios");
-       $("#miTotalDePublicacionesCargadas").val("5");
-      cargarPublicacionesComentarios();
+
+  $("#CargarMas").click(function () {
+    let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();
+    let consultaCasos = $("#miConsultaActual").val();
+    totalPublicaciones = totalPublicaciones + 5;
+    $("#miTotalDePublicacionesCargadas").val(totalPublicaciones);
+    switch (consultaCasos) {
+      case "Recientes":
+        cargarPublicaciones();
+        break;
+      case "Likes":
+        cargarPublicacionesLikes();
+        break;
+      case "Comentarios":
+        cargarPublicacionesComentarios();
+        break;
+    }
   });
 
-  
+  //  EDITAR PUBLICACION
+  $("#misPublicaciones").on("click", ".edit", funcEditarPublicaciones);
+  function funcEditarPublicaciones() {
+    let idPublicacion = $(this)
+      .parent()
+      .parent()
+      .children(".action-buttons")
+      .attr("id");
+    $("#idPublicacionEdit").val(idPublicacion);
+    $.ajax({
+      url: "http://localhost:8080/PublicacionId",
+      data: { id: idPublicacion },
+    })
+      .done(function (data) {
+        $("#miTextoEditar").val(data[0].texto);
+        $("#miFotoCargada-Edit").show();
+        $("#img-foto-edit").attr("src", "/ShowImagePost?id=" + data[0].id);
+        $("#InsertarPublicacion").hide();
+        $("#EditarPublicacion").show();
+      })
+      .fail(function (data) {
+        console.error(data);
+      });
+  }
+
+  //  ELIMINAR PUBLICACION
+  $("#misPublicaciones").on("click", ".delete", funcEliminarPublicacion);
+  function funcEliminarPublicacion() {
+    let id = $(this).attr("id");
+    if (confirm("¿Estas seguro de eliminar esta publicacion?")) {
+      $(this).parent().parent().remove();
+      $.ajax({
+        url: "http://localhost:8080/DeletePost",
+        type: "POST",
+        data: { idPublicacion: id },
+      })
+        .done(function (data) {})
+        .fail(function (data) {
+          console.error(data);
+        });
+    }
+  }
+
+  //Mas Recientes
+  $("#MasRecientes").click(function () {
+    $("#miConsultaActual").val("Recientes");
+    $("#miTotalDePublicacionesCargadas").val("5");
+    cargarPublicaciones();
+  });
+
+  //Mas Likes
+  $("#MasLikes").click(function () {
+    $("#miConsultaActual").val("Likes");
+    $("#miTotalDePublicacionesCargadas").val("5");
+    cargarPublicacionesLikes();
+  });
+
+  //Mas Comentadas
+  $("#MasComentadas").click(function () {
+    $("#miConsultaActual").val("Comentarios");
+    $("#miTotalDePublicacionesCargadas").val("5");
+    cargarPublicacionesComentarios();
+  });
+
+  //Busqueda por texto y hashtag
+  $("#postSearch").on("input", function () {
+    let postSearch = $(this).val();
+    let hashSearch = $("#message-search").val();
+    $.ajax({
+      url: "http://localhost:8080/PublicacionesSearch",
+      type: "GET",
+      data: { texto: postSearch, hashtag: hashSearch },
+    })
+      .done(function (data) {
+        let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();
+
+        let miIdUsuario = $("#miUserIdActual").val();
+
+        $("#misPublicaciones").empty();
+        for (let i = 0; i < data.length; i++) {
+          if (i < totalPublicaciones) {
+            let texto = data[i].texto;
+            let newTexto = texto.replaceAll(
+              /#([A-Za-z]+)/g,
+              '#<a href="#" class="hash">$1</a>'
+            );
+            if (miIdUsuario == data[i].idUsuario) {
+              if (data[i].isImagen != 1) {
+                $("#misPublicaciones").append(
+                  `
+                      <div class="feed">
+                                    <div class="head">
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>${data[i].NombreCompleto}</h3>
+                                                <small>${data[i].Fecha}</small>
+                                            </div>
+                                        </div>
+                                        <a class="edit" id="${data[i].idUsuario}" href="#">
+                                            <h3><i class="uil uil-pen"></i></h3>
+                                        </a>
+                                    </div>
+
+                                   <div class="caption">
+                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
+                                    </div>
+
+                                    <div class="action-buttons" id="${data[i].id}">
+                                        <div class="interaction-buttons" id="MisInteracciones">
+                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>
+                                  
+                                        </div>
+                                        <div class="bookmark">
+                                            <span><i class="uil uil-eye-slash"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="liked-by">                                   
+                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
+                                    </div>
+
+                                   
+                  <br>
+                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+                         
+                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
+                 
+                                    </div>
+                        <div class="head">
+                            <form class="create-post" id="${data[i].id}">
+                                <div class="profile-photo">
+                                    <img src="/ShowImage">
+                                </div>
+                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
+                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
+                                  
+                            </form>
+                                    </div>
+                                    
+                             
+                            </div>
+                                </div>
+                    `
+                );
+              } else {
+                $("#misPublicaciones").append(
+                  `
+                      <div class="feed">
+                                    <div class="head">
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>${data[i].NombreCompleto}</h3>
+                                                <small>${data[i].Fecha}</small>
+                                            </div>
+                                        </div>
+                                        <a class="edit"  href="#" id="${data[i].idUsuario}">
+                                           <h3><i class="uil uil-pen" ></i></h3>
+                                        </a>
+                                    </div>
+
+                                    <div class="photo">
+                                        <img src="/ShowImagePost?id=${data[i].id}">
+                                    </div>
+
+                                    <div class="action-buttons" id="${data[i].id}">
+                                        <div class="interaction-buttons" id="MisInteracciones">
+                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>
+                                  
+                                        </div>
+                                        <div class="bookmark">
+                                            <span><i class="uil uil-eye-slash"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="liked-by">                                   
+                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
+                                    </div>
+
+                                    <div class="caption">
+                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
+                                    </div>
+                  <br>
+                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+                               
+                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
+                 
+                                    </div> 
+                         <div class="head">
+                            <form class="create-post" id="${data[i].id}">
+                                <div class="profile-photo">
+                                    <img src="/ShowImage">
+                                </div>
+                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
+                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
+                                  
+                            </form>
+                                    </div>
+                            </div>
+                                </div>
+                    `
+                );
+              }
+            } else {
+              if (data[i].isImagen != 1) {
+                $("#misPublicaciones").append(
+                  `
+                      <div class="feed">
+                                    <div class="head">
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>${data[i].NombreCompleto}</h3>
+                                                <small>${data[i].Fecha}</small>
+                                            </div>
+                                        </div>                                 
+                                    </div>
+
+                                   <div class="caption">
+                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
+                                    </div>
+
+                                    <div class="action-buttons" id="${data[i].id}">
+                                        <div class="interaction-buttons" id="MisInteracciones">
+                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>
+                                  
+                                        </div>
+                                        <div class="bookmark">
+                                            <span><i class="uil uil-eye-slash"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="liked-by">                                   
+                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
+                                    </div>
+
+                                   
+                  <br>
+                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+                         
+                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
+                 
+                                    </div>
+                        <div class="head">
+                            <form class="create-post" id="${data[i].id}">
+                                <div class="profile-photo">
+                                    <img src="/ShowImage">
+                                </div>
+                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
+                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
+                                  
+                            </form>
+                                    </div>
+                                    
+                             
+                            </div>
+                                </div>
+                    `
+                );
+              } else {
+                $("#misPublicaciones").append(
+                  `
+                      <div class="feed">
+                                    <div class="head">
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>${data[i].NombreCompleto}</h3>
+                                                <small>${data[i].Fecha}</small>
+                                            </div>
+                                        </div>                                    
+                                    </div>
+
+                                    <div class="photo">
+                                        <img src="/ShowImagePost?id=${data[i].id}">
+                                    </div>
+
+                                    <div class="action-buttons" id="${data[i].id}">
+                                        <div class="interaction-buttons" id="MisInteracciones">
+                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>
+                                  
+                                        </div>
+                                        <div class="bookmark">
+                                            <span><i class="uil uil-eye-slash"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="liked-by">                                   
+                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
+                                    </div>
+
+                                    <div class="caption">
+                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
+                                    </div>
+                  <br>
+                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+                               
+                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
+                 
+                                    </div> 
+                         <div class="head">
+                            <form class="create-post" id="${data[i].id}">
+                                <div class="profile-photo">
+                                    <img src="/ShowImage">
+                                </div>
+                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
+                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
+                                  
+                            </form>
+                                    </div>
+                            </div>
+                                </div>
+                    `
+                );
+              }
+            }
+            $.ajax(
+              //Mostrar Comentarios
+              {
+                url: "http://localhost:8080/Comentario",
+                data: { idPublicacion: data[i].id },
+              }
+            )
+              .done(function (data) {
+                for (let i = 0; i < data.length; i++) {
+                  let miBusqueda = "#misComentarios-" + data[i].idPublicacion;
+                  if (miIdUsuario == data[i].idUsuario) {
+                    $(miBusqueda).append(`
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h5>${data[i].username}</h5> <span class="delete" id="${data[i].idComentario}">
+                                            <i class="uil uil-trash"></i>
+                                        </span>
+                                                <small>${data[i].texto}</small>
+                                            </div>
+                                        </div>
+                                       `);
+                  } else {
+                    $(miBusqueda).append(`
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h5>${data[i].username}</h5>
+                                                <small>${data[i].texto}</small>
+                                            </div>
+                                        </div>
+                                       `);
+                  }
+
+                  $(miBusqueda).children(".user").hide();
+                }
+              })
+              .fail(function (data) {
+                console.error(data);
+              });
+
+            if (i % 10 == 0) {
+              numberPage = i / 10 + 1;
+              Math.trunc(numberPage);
+            }
+          }
+        }
+      })
+      .fail(function (data) {
+        console.error(data);
+      });
+  });
 });
+
+//Busqueda por texto y hashtag
+$("#message-search").on("input", function () {
+  let hashSearch = $(this).val();
+  let postSearch = $("#postSearch").val();
+  $.ajax({
+    url: "http://localhost:8080/PublicacionesSearch",
+    type: "GET",
+    data: { texto: postSearch, hashtag: hashSearch },
+  })
+    .done(function (data) {
+      let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();
+
+      let miIdUsuario = $("#miUserIdActual").val();
+
+      $("#misPublicaciones").empty();
+      for (let i = 0; i < data.length; i++) {
+        if (i < totalPublicaciones) {
+          let texto = data[i].texto;
+          let newTexto = texto.replaceAll(
+            /#([A-Za-z]+)/g,
+            '#<a href="#" class="hash">$1</a>'
+          );
+          if (miIdUsuario == data[i].idUsuario) {
+            if (data[i].isImagen != 1) {
+              $("#misPublicaciones").append(
+                `
+                      <div class="feed">
+                                    <div class="head">
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>${data[i].NombreCompleto}</h3>
+                                                <small>${data[i].Fecha}</small>
+                                            </div>
+                                        </div>
+                                        <a class="edit" id="${data[i].idUsuario}" href="#">
+                                            <h3><i class="uil uil-pen"></i></h3>
+                                        </a>
+                                    </div>
+
+                                   <div class="caption">
+                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
+                                    </div>
+
+                                    <div class="action-buttons" id="${data[i].id}">
+                                        <div class="interaction-buttons" id="MisInteracciones">
+                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>
+                                  
+                                        </div>
+                                        <div class="bookmark">
+                                            <span><i class="uil uil-eye-slash"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="liked-by">                                   
+                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
+                                    </div>
+
+                                   
+                  <br>
+                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+                         
+                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
+                 
+                                    </div>
+                        <div class="head">
+                            <form class="create-post" id="${data[i].id}">
+                                <div class="profile-photo">
+                                    <img src="/ShowImage">
+                                </div>
+                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
+                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
+                                  
+                            </form>
+                                    </div>
+                                    
+                             
+                            </div>
+                                </div>
+                    `
+              );
+            } else {
+              $("#misPublicaciones").append(
+                `
+                      <div class="feed">
+                                    <div class="head">
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>${data[i].NombreCompleto}</h3>
+                                                <small>${data[i].Fecha}</small>
+                                            </div>
+                                        </div>
+                                        <a class="edit"  href="#" id="${data[i].idUsuario}">
+                                           <h3><i class="uil uil-pen" ></i></h3>
+                                        </a>
+                                    </div>
+
+                                    <div class="photo">
+                                        <img src="/ShowImagePost?id=${data[i].id}">
+                                    </div>
+
+                                    <div class="action-buttons" id="${data[i].id}">
+                                        <div class="interaction-buttons" id="MisInteracciones">
+                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>
+                                  
+                                        </div>
+                                        <div class="bookmark">
+                                            <span><i class="uil uil-eye-slash"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="liked-by">                                   
+                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
+                                    </div>
+
+                                    <div class="caption">
+                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
+                                    </div>
+                  <br>
+                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+                               
+                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
+                 
+                                    </div> 
+                         <div class="head">
+                            <form class="create-post" id="${data[i].id}">
+                                <div class="profile-photo">
+                                    <img src="/ShowImage">
+                                </div>
+                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
+                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
+                                  
+                            </form>
+                                    </div>
+                            </div>
+                                </div>
+                    `
+              );
+            }
+          } else {
+            if (data[i].isImagen != 1) {
+              $("#misPublicaciones").append(
+                `
+                      <div class="feed">
+                                    <div class="head">
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>${data[i].NombreCompleto}</h3>
+                                                <small>${data[i].Fecha}</small>
+                                            </div>
+                                        </div>                                 
+                                    </div>
+
+                                   <div class="caption">
+                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
+                                    </div>
+
+                                    <div class="action-buttons" id="${data[i].id}">
+                                        <div class="interaction-buttons" id="MisInteracciones">
+                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>
+                                  
+                                        </div>
+                                        <div class="bookmark">
+                                            <span><i class="uil uil-eye-slash"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="liked-by">                                   
+                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
+                                    </div>
+
+                                   
+                  <br>
+                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+                         
+                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
+                 
+                                    </div>
+                        <div class="head">
+                            <form class="create-post" id="${data[i].id}">
+                                <div class="profile-photo">
+                                    <img src="/ShowImage">
+                                </div>
+                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
+                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
+                                  
+                            </form>
+                                    </div>
+                                    
+                             
+                            </div>
+                                </div>
+                    `
+              );
+            } else {
+              $("#misPublicaciones").append(
+                `
+                      <div class="feed">
+                                    <div class="head">
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>${data[i].NombreCompleto}</h3>
+                                                <small>${data[i].Fecha}</small>
+                                            </div>
+                                        </div>                                    
+                                    </div>
+
+                                    <div class="photo">
+                                        <img src="/ShowImagePost?id=${data[i].id}">
+                                    </div>
+
+                                    <div class="action-buttons" id="${data[i].id}">
+                                        <div class="interaction-buttons" id="MisInteracciones">
+                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>
+                                  
+                                        </div>
+                                        <div class="bookmark">
+                                            <span><i class="uil uil-eye-slash"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="liked-by">                                   
+                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
+                                    </div>
+
+                                    <div class="caption">
+                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
+                                    </div>
+                  <br>
+                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+                               
+                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
+                 
+                                    </div> 
+                         <div class="head">
+                            <form class="create-post" id="${data[i].id}">
+                                <div class="profile-photo">
+                                    <img src="/ShowImage">
+                                </div>
+                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
+                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
+                                  
+                            </form>
+                                    </div>
+                            </div>
+                                </div>
+                    `
+              );
+            }
+          }
+          $.ajax(
+            //Mostrar Comentarios
+            {
+              url: "http://localhost:8080/Comentario",
+              data: { idPublicacion: data[i].id },
+            }
+          )
+            .done(function (data) {
+              for (let i = 0; i < data.length; i++) {
+                let miBusqueda = "#misComentarios-" + data[i].idPublicacion;
+                if (miIdUsuario == data[i].idUsuario) {
+                  $(miBusqueda).append(`
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h5>${data[i].username}</h5> <span class="delete" id="${data[i].idComentario}">
+                                            <i class="uil uil-trash"></i>
+                                        </span>
+                                                <small>${data[i].texto}</small>
+                                            </div>
+                                        </div>
+                                       `);
+                } else {
+                  $(miBusqueda).append(`
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h5>${data[i].username}</h5>
+                                                <small>${data[i].texto}</small>
+                                            </div>
+                                        </div>
+                                       `);
+                }
+
+                $(miBusqueda).children(".user").hide();
+              }
+            })
+            .fail(function (data) {
+              console.error(data);
+            });
+
+          if (i % 10 == 0) {
+            numberPage = i / 10 + 1;
+            Math.trunc(numberPage);
+          }
+        }
+      }
+    })
+    .fail(function (data) {
+      console.error(data);
+    });
+});
+
+// Al hacer click a una nota
+  $("#misPublicaciones").on('click', ".hash", funcBuscarHashtag);
+    function funcBuscarHashtag() {
+        let hashSearch = $(this).text();
+        $("#message-search").val(hashSearch);
+        let postSearch = $("#postSearch").val();
+        $.ajax({
+    url: "http://localhost:8080/PublicacionesSearch",
+    type: "GET",
+    data: { texto: postSearch, hashtag: hashSearch },
+  })
+    .done(function (data) {
+      let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();
+
+      let miIdUsuario = $("#miUserIdActual").val();
+
+      $("#misPublicaciones").empty();
+      for (let i = 0; i < data.length; i++) {
+        if (i < totalPublicaciones) {
+          let texto = data[i].texto;
+          let newTexto = texto.replaceAll(
+            /#([A-Za-z]+)/g,
+            '#<a href="#" class="hash">$1</a>'
+          );
+          if (miIdUsuario == data[i].idUsuario) {
+            if (data[i].isImagen != 1) {
+              $("#misPublicaciones").append(
+                `
+                      <div class="feed">
+                                    <div class="head">
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>${data[i].NombreCompleto}</h3>
+                                                <small>${data[i].Fecha}</small>
+                                            </div>
+                                        </div>
+                                        <a class="edit" id="${data[i].idUsuario}" href="#">
+                                            <h3><i class="uil uil-pen"></i></h3>
+                                        </a>
+                                    </div>
+
+                                   <div class="caption">
+                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
+                                    </div>
+
+                                    <div class="action-buttons" id="${data[i].id}">
+                                        <div class="interaction-buttons" id="MisInteracciones">
+                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>
+                                  
+                                        </div>
+                                        <div class="bookmark">
+                                            <span><i class="uil uil-eye-slash"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="liked-by">                                   
+                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
+                                    </div>
+
+                                   
+                  <br>
+                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+                         
+                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
+                 
+                                    </div>
+                        <div class="head">
+                            <form class="create-post" id="${data[i].id}">
+                                <div class="profile-photo">
+                                    <img src="/ShowImage">
+                                </div>
+                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
+                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
+                                  
+                            </form>
+                                    </div>
+                                    
+                             
+                            </div>
+                                </div>
+                    `
+              );
+            } else {
+              $("#misPublicaciones").append(
+                `
+                      <div class="feed">
+                                    <div class="head">
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>${data[i].NombreCompleto}</h3>
+                                                <small>${data[i].Fecha}</small>
+                                            </div>
+                                        </div>
+                                        <a class="edit"  href="#" id="${data[i].idUsuario}">
+                                           <h3><i class="uil uil-pen" ></i></h3>
+                                        </a>
+                                    </div>
+
+                                    <div class="photo">
+                                        <img src="/ShowImagePost?id=${data[i].id}">
+                                    </div>
+
+                                    <div class="action-buttons" id="${data[i].id}">
+                                        <div class="interaction-buttons" id="MisInteracciones">
+                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>
+                                  
+                                        </div>
+                                        <div class="bookmark">
+                                            <span><i class="uil uil-eye-slash"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="liked-by">                                   
+                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
+                                    </div>
+
+                                    <div class="caption">
+                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
+                                    </div>
+                  <br>
+                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+                               
+                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
+                 
+                                    </div> 
+                         <div class="head">
+                            <form class="create-post" id="${data[i].id}">
+                                <div class="profile-photo">
+                                    <img src="/ShowImage">
+                                </div>
+                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
+                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
+                                  
+                            </form>
+                                    </div>
+                            </div>
+                                </div>
+                    `
+              );
+            }
+          } else {
+            if (data[i].isImagen != 1) {
+              $("#misPublicaciones").append(
+                `
+                      <div class="feed">
+                                    <div class="head">
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>${data[i].NombreCompleto}</h3>
+                                                <small>${data[i].Fecha}</small>
+                                            </div>
+                                        </div>                                 
+                                    </div>
+
+                                   <div class="caption">
+                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
+                                    </div>
+
+                                    <div class="action-buttons" id="${data[i].id}">
+                                        <div class="interaction-buttons" id="MisInteracciones">
+                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>
+                                  
+                                        </div>
+                                        <div class="bookmark">
+                                            <span><i class="uil uil-eye-slash"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="liked-by">                                   
+                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
+                                    </div>
+
+                                   
+                  <br>
+                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+                         
+                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
+                 
+                                    </div>
+                        <div class="head">
+                            <form class="create-post" id="${data[i].id}">
+                                <div class="profile-photo">
+                                    <img src="/ShowImage">
+                                </div>
+                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
+                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
+                                  
+                            </form>
+                                    </div>
+                                    
+                             
+                            </div>
+                                </div>
+                    `
+              );
+            } else {
+              $("#misPublicaciones").append(
+                `
+                      <div class="feed">
+                                    <div class="head">
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>${data[i].NombreCompleto}</h3>
+                                                <small>${data[i].Fecha}</small>
+                                            </div>
+                                        </div>                                    
+                                    </div>
+
+                                    <div class="photo">
+                                        <img src="/ShowImagePost?id=${data[i].id}">
+                                    </div>
+
+                                    <div class="action-buttons" id="${data[i].id}">
+                                        <div class="interaction-buttons" id="MisInteracciones">
+                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>
+                                  
+                                        </div>
+                                        <div class="bookmark">
+                                            <span><i class="uil uil-eye-slash"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="liked-by">                                   
+                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
+                                    </div>
+
+                                    <div class="caption">
+                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
+                                    </div>
+                  <br>
+                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+                               
+                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
+                 
+                                    </div> 
+                         <div class="head">
+                            <form class="create-post" id="${data[i].id}">
+                                <div class="profile-photo">
+                                    <img src="/ShowImage">
+                                </div>
+                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
+                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
+                                  
+                            </form>
+                                    </div>
+                            </div>
+                                </div>
+                    `
+              );
+            }
+          }
+          $.ajax(
+            //Mostrar Comentarios
+            {
+              url: "http://localhost:8080/Comentario",
+              data: { idPublicacion: data[i].id },
+            }
+          )
+            .done(function (data) {
+              for (let i = 0; i < data.length; i++) {
+                let miBusqueda = "#misComentarios-" + data[i].idPublicacion;
+                if (miIdUsuario == data[i].idUsuario) {
+                  $(miBusqueda).append(`
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h5>${data[i].username}</h5> <span class="delete" id="${data[i].idComentario}">
+                                            <i class="uil uil-trash"></i>
+                                        </span>
+                                                <small>${data[i].texto}</small>
+                                            </div>
+                                        </div>
+                                       `);
+                } else {
+                  $(miBusqueda).append(`
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo">
+                                                <h5>${data[i].username}</h5>
+                                                <small>${data[i].texto}</small>
+                                            </div>
+                                        </div>
+                                       `);
+                }
+
+                $(miBusqueda).children(".user").hide();
+              }
+            })
+            .fail(function (data) {
+              console.error(data);
+            });
+
+          if (i % 10 == 0) {
+            numberPage = i / 10 + 1;
+            Math.trunc(numberPage);
+          }
+        }
+      }
+    })
+    .fail(function (data) {
+      console.error(data);
+    });
+    }
