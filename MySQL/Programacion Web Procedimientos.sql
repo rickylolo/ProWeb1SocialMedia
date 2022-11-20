@@ -49,6 +49,14 @@ BEGIN
 END //
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS getAllUsers;
+DELIMITER //
+CREATE PROCEDURE getAllUsers()
+BEGIN 
+  SELECT CveUsuario,Nombre,Apellidos,NombreUsuario FROM Usuarios
+  LIMIT 15;
+END //
+DELIMITER ;
 
 DROP PROCEDURE IF EXISTS getAllPosts;
 DELIMITER //
@@ -108,8 +116,11 @@ DELIMITER //
 CREATE PROCEDURE ActualizarPublicacion(IN u_CvePubli INT,IN u_Texto VARCHAR(280),IN u_Imagen MEDIUMBLOB)
 BEGIN 
    SET u_Texto=IF(u_Texto='',NULL,u_Texto),
-			u_Imagen=IF(u_Imagen='',NULL,u_Imagen);
-   UPDATE Publicaciones SET Texto = u_Texto, Imagen= u_Imagen WHERE CvePubli = u_CvePubli;
+	   u_Imagen=IF(u_Imagen='',NULL,u_Imagen);
+   UPDATE Publicaciones SET 
+		 Texto = IFNULL(u_Texto,Texto),
+		 Imagen = IFNULL(u_Imagen,Imagen)		
+         WHERE CvePubli = u_CvePubli;
    SELECT * FROM Publicaciones WHERE CvePubli = u_CvePubli AND Activo = 1;
 END //
 DELIMITER ;
@@ -152,7 +163,8 @@ CREATE PROCEDURE getAllComentariosPost(IN u_IdPublicacion INT)
 BEGIN 
    SELECT CveComentario,Texto,IdUsuario,Spoiler,IdPublicacion,CONCAT("@",NombreUsuario) AS Username FROM Comentarios
    INNER JOIN Usuarios ON CveUsuario = IdUsuario
-   WHERE IdPublicacion = u_IdPublicacion;
+   WHERE IdPublicacion = u_IdPublicacion
+   ORDER BY CveComentario DESC;
 END //
 DELIMITER ;
 
@@ -164,17 +176,40 @@ BEGIN
  FROM Publicaciones 
   INNER JOIN Usuarios ON CveUsuario = Publicaciones.IdUsuario 
   WHERE Activo = 1 
-	AND (u_text = "" OR u_texto IS NULL OR Texto LIKE CONCAT("%",u_texto,"%")) 
+	AND (u_texto = "" OR u_texto IS NULL OR Texto LIKE CONCAT("%",u_texto,"%")) 
     AND (u_hashtag = "" OR u_hashtag IS NULL OR Texto LIKE CONCAT("%#",u_hashtag,"%")) 
+    AND (u_fecha1 = "" OR u_fecha1 IS NULL OR FechaCreacion )
     ORDER BY CvePubli DESC;
 
 END //
 DELIMITER ;
 
 
-CALL getPostId (4);
-CALL searchPosts ("oLa",NULL);
-SELECT * FROM Usuarios;
-SELECT * FROM Publicaciones;
-SELECT * FROM Likes;
-SELECT * FROM Comentarios;
+DROP PROCEDURE IF EXISTS comentarioSpoiler;
+DELIMITER //
+CREATE PROCEDURE comentarioSpoiler(IN idComentario INT)
+BEGIN 
+	IF(SELECT Spoiler FROM Comentarios WHERE CveComentario = idComentario) = 1
+    THEN
+     UPDATE Comentarios SET Spoiler = 0 WHERE CveComentario = idComentario;
+    ELSE
+   UPDATE Comentarios SET Spoiler = 1 WHERE CveComentario = idComentario;
+   END IF;
+END //
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS postSpoiler;
+DELIMITER //
+CREATE PROCEDURE postSpoiler(IN idPost INT)
+BEGIN 
+	IF(SELECT Spoiler FROM Publicaciones WHERE CvePubli = idPost) = 1
+    THEN
+     UPDATE Publicaciones SET Spoiler = 0 WHERE CvePubli = idPost;
+    ELSE
+   UPDATE Publicaciones SET Spoiler = 1 WHERE CvePubli = idPost;
+   END IF;
+END //
+DELIMITER ;
+
+

@@ -60,6 +60,18 @@
         <servlet-name>DeletePost</servlet-name>
         <servlet-class>proweb.proweb1socialmedia.DeletePost</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SpoilerComentario</servlet-name>
+        <servlet-class>proweb.proweb1socialmedia.SpoilerComentario</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SpoilerPost</servlet-name>
+        <servlet-class>proweb.proweb1socialmedia.SpoilerPost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Users</servlet-name>
+        <servlet-class>proweb.proweb1socialmedia.Users</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -119,6 +131,18 @@
     <servlet-mapping>
         <servlet-name>DeletePost</servlet-name>
         <url-pattern>/DeletePost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SpoilerComentario</servlet-name>
+        <url-pattern>/SpoilerComentario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SpoilerPost</servlet-name>
+        <url-pattern>/SpoilerPost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Users</servlet-name>
+        <url-pattern>/Users</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

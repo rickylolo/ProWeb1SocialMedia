@@ -65,77 +65,9 @@
                                     <span><i class="uil uil-home"></i></span>
                                     <h3>Inicio</h3>
                                 </a>
-                                <a class="menu-item">
-                                    <span><i class="uil uil-compass"></i></span>
-                                    <h3>Explora</h3>
-                                </a>
-                                <a class="menu-item" id="notifications">
-                                    <span><i class="uil uil-bell"><small
-                                                class="notification-count">9+</small></i></span>
-                                    <h3>Notificaciones</h3>
-                                    <!-------------------- NOTIFICATION POPUP ---------------->
-                                    <div class="notifications-popup">
-                                        <div>
-                                            <div class="profile-photo">
-                                                <img src="images/profile-2.jpg">
-                                            </div>
-                                            <div class="notification-body">
-                                                <b>Keke Benjamin</b> accepted your friend request
-                                                <small class="text-muted">2 DAYS AGO</small>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="profile-photo">
-                                                <img src="./images/profile-3.jpg">
-                                            </div>
-                                            <div class="notification-body">
-                                                <b>John Doe</b> commented on your post
-                                                <small class="text-muted">1 HOUR AGO</small>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="profile-photo">
-                                                <img src="./images/profile-4.jpg">
-                                            </div>
-                                            <div class="notification-body">
-                                                <b>Mary Oppong</b> and <b>283 others </b> liked your post
-                                                <small class="text-muted">4 MINUTES AGO</small>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="profile-photo">
-                                                <img src="./images/profile-5.jpg">
-                                            </div>
-                                            <div class="notification-body">
-                                                <b>Doris Y. Lartey</b> commented on a post you are tagged in
-                                                <small class="text-muted">2 DAYS AGO</small>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="profile-photo">
-                                                <img src="./images/profile-6.jpg">
-                                            </div>
-                                            <div class="notification-body">
-                                                <b>Donald Trump</b> commented on a post you are tagged in
-                                                <small class="text-muted">1 HOUR AGO</small>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="profile-photo">
-                                                <img src="./images/profile-7.jpg">
-                                            </div>
-                                            <div class="notification-body">
-                                                <b>jane Doe</b> commented on your post
-                                                <small class="text-muted">1 HOUR AGO</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-------------------- END NOTIFICATION POPUP ---------------->
-                                </a>
                                 <a class="menu-item" id="messages-notification">
-                                    <span><i class="uil uil-envelope-alt"><small
-                                                class="notification-count">6</small></i></span>
-                                    <h3>Mensajes</h3>
+                                    <span><i class="uil uil-users-alt"></i></span>
+                                    <h3>Usuarios</h3>
                                 </a>
 
                                 <a class="menu-item" id="theme">
@@ -155,7 +87,7 @@
                                  </a>
                             </div>
                             <!------------------- END OF SIDEBAR -------------------->
-                            <label for="create-post" class="btn btn-primary">Crear Publicación</label>
+                            <label id="CrearPubliOE" for="create-post" class="btn btn-primary">Crear Publicación</label>
                         </div>
                         <!------------------- END OF LEFT -------------------->
 
@@ -163,46 +95,7 @@
 
                         <!--======================== MIDDLE ==========================-->
                         <div class="middle">
-                            <!------------------- STORIES -------------------->
-                            <div class="stories">
-                                <div class="story">
-                                    <div class="profile-photo">
-                                        <img src="/ShowImage">
-                                    </div>
-                                    <p class="name">Tu ultima publicación</p>
-                                </div>
-                                <div class="story">
-                                    <div class="profile-photo">
-                                        <img src="/ShowImage">
-                                    </div>
-                                    <p class="name">FCFM UANL (OFICIAL)</p>
-                                </div>
-                                <div class="story">
-                                    <div class="profile-photo">
-                                        <img src="images/profile-15.png">
-                                    </div>
-                                    <p class="name">Adopta Monterrey</p>
-                                </div>
-                                <div class="story">
-                                    <div class="profile-photo">
-                                        <img src="images/profile-016.jpg">
-                                    </div>
-                                    <p class="name">Cristiano Ronaldo</p>
-                                </div>
-                                <div class="story">
-                                    <div class="profile-photo">
-                                        <img src="images/profile-16.jpg">
-                                    </div>
-                                    <p class="name">Suri Cz</p>
-                                </div>
-                                <div class="story">
-                                    <div class="profile-photo">
-                                        <img src="images/profile-17.jpg">
-                                    </div>
-                                    <p class="name">Marisol Acosta</p>
-                                </div>
-                            </div>
-                            <!------------------- END OF STORIES -------------------->
+                        
                             <div class="feed">
                                   <!------------------- Insertar Publicacion--------------------->
                                     <div class="head" id="InsertarPublicacion">
@@ -243,6 +136,7 @@
 
                          
                                     <!------------------- Editar Usuario --------------------->
+                                    <div class="feeds">
                                 <div class="feed" id="miEditPerfil">
                                     <div class="head">
                                         <div class="user">
@@ -290,6 +184,7 @@
         </form>
                              
                                 </div>
+                                    </div>
                                 <!---------------- END OF FEED ----------------->
                                    <!------------------- FEEDS --------------------->
                             <div class="feeds" id="misPublicaciones">
@@ -298,7 +193,33 @@
                      
                             </div>
                                    <input type="hidden" value="5" id="miTotalDePublicacionesCargadas">
-                                   <Button class="btn btn-primary" type="button"id="CargarMas" >Cargar Mas</button>
+                                   <Button class="btn btn-primary" type="button" id="CargarMas" >Cargar Mas</button>
+                                   <div class="feeds">
+                                    <div class="feed">
+                                    <div class="head">
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/images/feed-5.jpg">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>Suri Cz</h3>   
+                                                <small>FrontEnd Developer</small>
+                                            </div>
+                                        </div>
+                                      
+                                         <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/images/profile-1.jpg">
+                                            </div>
+                                            <div class="ingo">
+                                                <h3>Omar</h3>   
+                                                <small>BackEnd Developer</small>
+                                            </div>
+                                        </div>
+                                 
+                                    </div>
+                                    </div>
+                                    </div>
                             <!------------------------------- END OF FEEDS ------------------------------------>
                         </div>
                         <!--======================== END OF MIDDLE ==========================-->
@@ -323,57 +244,12 @@
                                 </div>
                                 <!------------ MESSAGE -------------->
                                 <!----- MESSAGE ----->
-                                <div class="message">
-                                    <div class="profile-photo">
-                                        <img src="./images/profile-2.jpg">
-                                    </div>
-                                    <div class="message-body">
-                                        <h5>Edem Quist</h5>
-                                        <p class="text-muted">Just woke up bruh</p>
-                                    </div>
+                                 <div class="heading">
+                                    <h4>Usuarios</h4><i class="uil uil-user"></i>
                                 </div>
-                                <!----- MESSAGE ----->
-                                <div class="message">
-                                    <div class="profile-photo">
-                                        <img src="./images/profile-3.jpg">
-                                        <div class="active"></div>
-                                    </div>
-                                    <div class="message-body">
-                                        <h5>Franca Deila</h5>
-                                        <p class="text-bold">Received bruh. Thanks!</p>
-                                    </div>
-                                </div>
-                                <!----- MESSAGE ----->
-                                <div class="message">
-                                    <div class="profile-photo">
-                                        <img src="./images/profile-4.jpg">
-                                    </div>
-                                    <div class="message-body">
-                                        <h5>Jane Doe</h5>
-                                        <p class="text-bold">ok</p>
-                                    </div>
-                                </div>
-                                <!----- MESSAGE ----->
-                                <div class="message">
-                                    <div class="profile-photo">
-                                        <img src="./images/profile-5.jpg">
-                                    </div>
-                                    <div class="message-body">
-                                        <h5>Daniella Jackson</h5>
-                                        <p class="text-bold">2 new messages</p>
-                                    </div>
-                                </div>
-                                <!----- MESSAGE ----->
-                                <div class="message">
-                                    <div class="profile-photo">
-                                        <img src="./images/profile-6.jpg">
-                                    </div>
-                                    <div class="message-body">
-                                        <h5>Juliet Makarey</h5>
-                                        <p class="text-muted">lol u right</p>
-                                    </div>
-                                </div>
-                                <!----- MESSAGE ----->
+                                
+                                
+                          
                                
                             </div>
                             <!------------ END OF MESSAGES -------------->
@@ -443,4 +319,5 @@
                 <script src="js/publicacionScript.js"></script>
             </body>
 
+            
             </html>

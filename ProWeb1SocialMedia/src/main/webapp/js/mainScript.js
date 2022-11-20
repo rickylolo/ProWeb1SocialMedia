@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    
+    datosUser();
+    getDatosUsers();
   $("#miEditPerfil").hide();
  $("#miFotoCargada").hide();
  $("#miFotoCargada-Edit").hide();
@@ -8,7 +9,35 @@ $(document).ready(function () {
     $("#miEditPerfil").toggle();
   }
 
+function getDatosUsers(){
   $.ajax(
+    //GET DATOS USUARIOS 
+    {
+      url: "http://localhost:8080/Users"
+    }
+  )
+    .done(function (data) {
+            for (let i = 0; i < data.length; i++) {
+     $("#misUsuarios").append( `
+                                  <div class="message">
+                                    <div class="profile-photo">
+                                        <img src="/ShowImageUser?id=${data[i].id}">
+                                    </div>
+                                    <div class="message-body">
+                                        <h5>@${data[i].username}</h5>
+                                        <p class="text-muted">${data[i].name}</p>
+                                    </div>
+                                </div>
+                ` );
+        }
+    })
+    .fail(function (data) {
+      console.error(data);
+    });
+    
+}
+function datosUser(){
+     $.ajax(
     //GET DATOS USUARIO
     {
       url: "http://localhost:8080/Register"
@@ -31,6 +60,7 @@ $(document).ready(function () {
     .fail(function (data) {
       console.error(data);
     });
+    }
 });
 
 let vista_preliminar = (event)=>{

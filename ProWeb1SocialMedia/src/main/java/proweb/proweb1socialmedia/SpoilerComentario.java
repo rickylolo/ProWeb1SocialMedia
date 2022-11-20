@@ -4,15 +4,12 @@
  */
 package proweb.proweb1socialmedia;
 
-import DAO.ComentarioDAO;
-import DTO.ComentarioDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
@@ -25,7 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
-public class Comentario extends HttpServlet {
+
+public class SpoilerComentario extends HttpServlet {
 
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -36,66 +34,35 @@ public class Comentario extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Comentario</title>");            
+            out.println("<title>Servlet SpoilerComentario</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Comentario at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SpoilerComentario at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
 
-  
+ 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       try {
-            int miIdPublicacion = Integer.parseInt(request.getParameter("idPublicacion"));
-            ArrayList<ComentarioDTO> resultados = ComentarioDAO.consultar(miIdPublicacion);
-            response.setContentType("application/json;charset=UTF-8");
-            String respuesta = "[";
-            boolean esPrimero = true;
-            for(ComentarioDTO miComentario : resultados){
-                if(esPrimero){
-                    esPrimero = false;
-                }
-                else{
-                    respuesta +=",";
-                }
-                String objeto = "{";
-                objeto += "\"idComentario\":" + miComentario.getIdComentario();
-                objeto += ",\"texto\":\"" + miComentario.getComentario()+ "\"";
-                objeto += ",\"username\":\"" + miComentario.getUsername()+ "\"";
-                objeto += ",\"spoiler\":\"" + miComentario.isSpoiler()+ "\"";
-                objeto += ",\"idPublicacion\":\"" + miComentario.getIdPublicacion()+ "\"";
-                objeto += ",\"idUsuario\":\"" + miComentario.getIdUsuario()+ "\"";
-                objeto += "}";
-                respuesta += objeto;
-            }
-            respuesta += "]";
-            response.getWriter().print(respuesta);
-        } catch (NamingException | SQLException ex) {
-            Logger.getLogger(Publicaciones.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         try{
-            int miIdPublicacion = Integer.parseInt(request.getParameter("idPublicacion"));
-            String miComentario = request.getParameter("miComentario");
+          try{
+            int miIdComentario = Integer.parseInt(request.getParameter("id"));
             Context contexto = new InitialContext();
             Context ambiente = (Context)contexto.lookup("java:comp/env");
             DataSource infoConexion = (DataSource)ambiente.lookup("jdbc/MeetingPoint");
             Connection conexion = infoConexion.getConnection();
-            PreparedStatement comando = conexion.prepareStatement("CALL InsertarComentario(?,?,?);");
-                HttpSession session=request.getSession();
-            UserDTO user=(UserDTO)session.getAttribute("usuario");
-            int iduser = user.getId();
-            comando.setString(1,miComentario);
-            comando.setInt(2,iduser);
-            comando.setInt(3,miIdPublicacion);
+            PreparedStatement comando = conexion.prepareStatement("CALL comentarioSpoiler(?);");
+            comando.setInt(1,miIdComentario);
+    
             comando.execute();
             comando.close();
             conexion.close();

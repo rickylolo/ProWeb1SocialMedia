@@ -30,7 +30,7 @@ public class ComentarioDAO {
             ResultSet resultados = comando.getResultSet();
             while(resultados.next()){
                  ComentarioDTO comentario = new ComentarioDTO();
-                  comentario.setIdPublicacion(resultados.getInt("CveComentario"));
+                  comentario.setIdComentario(resultados.getInt("CveComentario"));
                   comentario.setComentario(resultados.getString("Texto"));
                   comentario.setIdUsuario(resultados.getInt("IdUsuario"));
                   comentario.setSpoiler(resultados.getBoolean("Spoiler"));

@@ -23,11 +23,8 @@ $(document).ready(function () {
               /#([A-Za-z]+)/g,
               '#<a href="#" class="hash">$1</a>'
             );
-            if (miIdUsuario == data[i].idUsuario) {
-              if (data[i].isImagen != 1) {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
+            let miPublicacion =    `
+                          <div class="feed">
                                     <div class="head">
                                         <div class="user">
                                             <div class="profile-photo">
@@ -38,36 +35,63 @@ $(document).ready(function () {
                                                 <small>${data[i].Fecha}</small>
                                             </div>
                                         </div>
+                  `;
+             if(miIdUsuario == data[i].idUsuario){
+                 miPublicacion = miPublicacion + `
                                         <a class="edit" id="${data[i].idUsuario}" href="#">
                                             <h3><i class="uil uil-pen"></i></h3>
                                         </a>
                                         <a class="delete" id="${data[i].id}">
                                             <h3><i class="uil uil-trash-alt"></i></h3>
-                                        </a>
-                                    </div>
-
-                                   <div class="caption">
-                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-
+                                        </a> `;
+             }
+                miPublicacion = miPublicacion + `</div> `  ;
+             if(data[i].spoiler == "false"){
+                   miPublicacion = miPublicacion + ` 
+                                    <div class="caption">                                  
+                                        <p>Esta publicacion fue marcada como spoiler
+                                    </div>`  ;
+             }else{
+                   miPublicacion = miPublicacion + ` 
+                                    <div class="caption">                                  
+                                        <p>${newTexto}
+                                    </div>`  ;
+             }
+             if(data[i].isImagen == 1){
+                 if(data[i].spoiler == "true"){
+                         miPublicacion = miPublicacion + ` 
+                    <div class="photo">
+                                        <img class="miImagenAttr" src="/ShowImagePost?id=${data[i].id}">
+                    </div>`;
+                 }else{
+                      miPublicacion = miPublicacion + ` 
+                      <div class="photo">
+                                        <img class="miImagenAttr" src="/ShowImagePost?id=${data[i].id}" style="display:none;">
+                    </div>`;
+                 }
+                 
+             }
+                     miPublicacion = miPublicacion + `                                   
                                     <div class="action-buttons" id="${data[i].id}">
                                         <div class="interaction-buttons" id="MisInteracciones">
                                             <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>                                
+                                      </div>
+                                        <input type="hidden" value='${newTexto}' class="miTextoPostHidden">
+                                        <input type="hidden" value="/ShowImagePost?id=${data[i].id}" class="miImagenPostHidden">
+                                           <div class="bookmark" id="${data[i].id}">                    
+                                            <span id="${data[i].idUsuario}">
+                                                <i class="spoilerPost uil-eye-slash"></i>
+                                            </span>
                                         </div>
                                     </div>
 
                                     <div class="liked-by">                                   
                                         <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
                                     </div>
-
-                                   
-                  <br>
+                                     <br>
                                     <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+
                          
                    <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
                  
@@ -81,197 +105,18 @@ $(document).ready(function () {
                                 <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
                                   
                             </form>
-                                    </div>
-                                    
-                             
-                            </div>
-                                </div>
-                    `
-                );
-              } else {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>
-                                        <a class="edit"  href="#" id="${data[i].idUsuario}">
-                                           <h3><i class="uil uil-pen" ></i></h3>
-                                        </a>
-                                        <a class="delete" id="${data[i].id}">
-                                            <h3><i class="uil uil-trash-alt"></i></h3>
-                                        </a>
-                                    </div>
-
-                                    <div class="photo">
-                                        <img src="/ShowImagePost?id=${data[i].id}">
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
-
-                                    <div class="caption">
-                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                               
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div> 
-                         <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                            </div>
-                                </div>
-                    `
-                );
-              }
-            } else {
-              if (data[i].isImagen != 1) {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>                                 
-                                    </div>
-
-                                   <div class="caption">
-                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
+                        </div>
+                    </div>
+                 </div>`  ;
+                                   
 
                                    
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                         
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div>
-                        <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                                    
-                             
-                            </div>
-                                </div>
-                    `
-                );
-              } else {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>                                    
-                                    </div>
+                
+            $("#misPublicaciones").append(miPublicacion);
+                  
+       
+              
 
-                                    <div class="photo">
-                                        <img src="/ShowImagePost?id=${data[i].id}">
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
-
-                                    <div class="caption">
-                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                               
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div> 
-                         <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                            </div>
-                                </div>
-                    `
-                );
-              }
-            }
             $.ajax(
               //Mostrar Comentarios
               {
@@ -282,29 +127,36 @@ $(document).ready(function () {
               .done(function (data) {
                 for (let i = 0; i < data.length; i++) {
                   let miBusqueda = "#misComentarios-" + data[i].idPublicacion;
-                  if (miIdUsuario == data[i].idUsuario) {
+
+                  if (data[i].spoiler == "true") {
                     $(miBusqueda).append(`
                                         <div class="user">
                                             <div class="profile-photo">
                                                 <img src="/ShowImageUser?id=${data[i].idUsuario}">
                                             </div>
-                                            <div class="ingo">
-                                                <h5>${data[i].username}</h5> <span class="delete" id="${data[i].idComentario}">
-                                            <i class="uil uil-trash"></i>
-                                        </span>
-                                                <small>${data[i].texto}</small>
+                                            <div id="${data[i].idUsuario}" class="ingo">
+                                                <h5>${data[i].username}</h5> 
+                                                 <span id="${data[i].idComentario}">
+                                                    <i class="spoilerComment uil uil-eye-slash"></i>
+                                                </span>
+                                                <small class="MiTexto">${data[i].texto}</small>
                                             </div>
                                         </div>
                                        `);
-                  } else {
+                  }
+                  if (data[i].spoiler == "false") {
                     $(miBusqueda).append(`
                                         <div class="user">
                                             <div class="profile-photo">
                                                 <img src="/ShowImageUser?id=${data[i].idUsuario}">
                                             </div>
-                                            <div class="ingo">
+                                            <div class="ingo" id="${data[i].idUsuario}">
                                                 <h5>${data[i].username}</h5>
-                                                <small>${data[i].texto}</small>
+                                                <span id="${data[i].idComentario}">
+                                                    <i class="spoilerComment uil uil-eye-slash"></i>
+                                                </span>
+                                                <input type="hidden" class="textoOculto" value="${data[i].texto}">
+                                                <small class="MiTexto">Este contenido fue marcado como spoiler</small>
                                             </div>
                                         </div>
                                        `);
@@ -335,7 +187,7 @@ $(document).ready(function () {
         url: "http://localhost:8080/PublicacionesLikes",
       }
     )
-      .done(function (data) {
+       .done(function (data) {
         let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();
 
         let miIdUsuario = $("#miUserIdActual").val();
@@ -348,11 +200,8 @@ $(document).ready(function () {
               /#([A-Za-z]+)/g,
               '#<a href="#" class="hash">$1</a>'
             );
-            if (miIdUsuario == data[i].idUsuario) {
-              if (data[i].isImagen != 1) {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
+            let miPublicacion =    `
+                          <div class="feed">
                                     <div class="head">
                                         <div class="user">
                                             <div class="profile-photo">
@@ -363,33 +212,63 @@ $(document).ready(function () {
                                                 <small>${data[i].Fecha}</small>
                                             </div>
                                         </div>
+                  `;
+             if(miIdUsuario == data[i].idUsuario){
+                 miPublicacion = miPublicacion + `
                                         <a class="edit" id="${data[i].idUsuario}" href="#">
                                             <h3><i class="uil uil-pen"></i></h3>
                                         </a>
-                                    </div>
-
-                                   <div class="caption">
-                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-
+                                        <a class="delete" id="${data[i].id}">
+                                            <h3><i class="uil uil-trash-alt"></i></h3>
+                                        </a> `;
+             }
+                miPublicacion = miPublicacion + `</div> `  ;
+             if(data[i].spoiler == "false"){
+                   miPublicacion = miPublicacion + ` 
+                                    <div class="caption">                                  
+                                        <p>Esta publicacion fue marcada como spoiler
+                                    </div>`  ;
+             }else{
+                   miPublicacion = miPublicacion + ` 
+                                    <div class="caption">                                  
+                                        <p>${newTexto}
+                                    </div>`  ;
+             }
+             if(data[i].isImagen == 1){
+                 if(data[i].spoiler == "true"){
+                         miPublicacion = miPublicacion + ` 
+                    <div class="photo">
+                                        <img class="miImagenAttr" src="/ShowImagePost?id=${data[i].id}">
+                    </div>`;
+                 }else{
+                      miPublicacion = miPublicacion + ` 
+                      <div class="photo">
+                                        <img class="miImagenAttr" src="/ShowImagePost?id=${data[i].id}" style="display:none;">
+                    </div>`;
+                 }
+                 
+             }
+                     miPublicacion = miPublicacion + `                                   
                                     <div class="action-buttons" id="${data[i].id}">
                                         <div class="interaction-buttons" id="MisInteracciones">
                                             <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>                                
+                                      </div>
+                                        <input type="hidden" value='${newTexto}' class="miTextoPostHidden">
+                                        <input type="hidden" value="/ShowImagePost?id=${data[i].id}" class="miImagenPostHidden">
+                                           <div class="bookmark" id="${data[i].id}">                    
+                                            <span id="${data[i].idUsuario}">
+                                                <i class="spoilerPost uil-eye-slash"></i>
+                                            </span>
                                         </div>
                                     </div>
 
                                     <div class="liked-by">                                   
                                         <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
                                     </div>
-
-                                   
-                  <br>
+                                     <br>
                                     <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+
                          
                    <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
                  
@@ -403,194 +282,18 @@ $(document).ready(function () {
                                 <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
                                   
                             </form>
-                                    </div>
-                                    
-                             
-                            </div>
-                                </div>
-                    `
-                );
-              } else {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>
-                                        <a class="edit"  href="#" id="${data[i].idUsuario}">
-                                           <h3><i class="uil uil-pen" ></i></h3>
-                                        </a>
-                                    </div>
-
-                                    <div class="photo">
-                                        <img src="/ShowImagePost?id=${data[i].id}">
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
-
-                                    <div class="caption">
-                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                               
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div> 
-                         <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                            </div>
-                                </div>
-                    `
-                );
-              }
-            } else {
-              if (data[i].isImagen != 1) {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>                                 
-                                    </div>
-
-                                   <div class="caption">
-                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
+                        </div>
+                    </div>
+                 </div>`  ;
+                                   
 
                                    
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                         
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div>
-                        <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                                    
-                             
-                            </div>
-                                </div>
-                    `
-                );
-              } else {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>                                    
-                                    </div>
+                
+            $("#misPublicaciones").append(miPublicacion);
+                  
+       
+              
 
-                                    <div class="photo">
-                                        <img src="/ShowImagePost?id=${data[i].id}">
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
-
-                                    <div class="caption">
-                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                               
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div> 
-                         <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                            </div>
-                                </div>
-                    `
-                );
-              }
-            }
             $.ajax(
               //Mostrar Comentarios
               {
@@ -601,29 +304,36 @@ $(document).ready(function () {
               .done(function (data) {
                 for (let i = 0; i < data.length; i++) {
                   let miBusqueda = "#misComentarios-" + data[i].idPublicacion;
-                  if (miIdUsuario == data[i].idUsuario) {
+
+                  if (data[i].spoiler == "true") {
                     $(miBusqueda).append(`
                                         <div class="user">
                                             <div class="profile-photo">
                                                 <img src="/ShowImageUser?id=${data[i].idUsuario}">
                                             </div>
-                                            <div class="ingo">
-                                                <h5>${data[i].username}</h5> <span class="delete" id="${data[i].idComentario}">
-                                            <i class="uil uil-trash"></i>
-                                        </span>
-                                                <small>${data[i].texto}</small>
+                                            <div id="${data[i].idUsuario}" class="ingo">
+                                                <h5>${data[i].username}</h5> 
+                                                 <span id="${data[i].idComentario}">
+                                                    <i class="spoilerComment uil uil-eye-slash"></i>
+                                                </span>
+                                                <small class="MiTexto">${data[i].texto}</small>
                                             </div>
                                         </div>
                                        `);
-                  } else {
+                  }
+                  if (data[i].spoiler == "false") {
                     $(miBusqueda).append(`
                                         <div class="user">
                                             <div class="profile-photo">
                                                 <img src="/ShowImageUser?id=${data[i].idUsuario}">
                                             </div>
-                                            <div class="ingo">
+                                            <div class="ingo" id="${data[i].idUsuario}">
                                                 <h5>${data[i].username}</h5>
-                                                <small>${data[i].texto}</small>
+                                                <span id="${data[i].idComentario}">
+                                                    <i class="spoilerComment uil uil-eye-slash"></i>
+                                                </span>
+                                                <input type="hidden" class="textoOculto" value="${data[i].texto}">
+                                                <small class="MiTexto">Este contenido fue marcado como spoiler</small>
                                             </div>
                                         </div>
                                        `);
@@ -667,11 +377,8 @@ $(document).ready(function () {
               /#([A-Za-z]+)/g,
               '#<a href="#" class="hash">$1</a>'
             );
-            if (miIdUsuario == data[i].idUsuario) {
-              if (data[i].isImagen != 1) {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
+            let miPublicacion =    `
+                          <div class="feed">
                                     <div class="head">
                                         <div class="user">
                                             <div class="profile-photo">
@@ -682,33 +389,63 @@ $(document).ready(function () {
                                                 <small>${data[i].Fecha}</small>
                                             </div>
                                         </div>
+                  `;
+             if(miIdUsuario == data[i].idUsuario){
+                 miPublicacion = miPublicacion + `
                                         <a class="edit" id="${data[i].idUsuario}" href="#">
                                             <h3><i class="uil uil-pen"></i></h3>
                                         </a>
-                                    </div>
-
-                                   <div class="caption">
-                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-
+                                        <a class="delete" id="${data[i].id}">
+                                            <h3><i class="uil uil-trash-alt"></i></h3>
+                                        </a> `;
+             }
+                miPublicacion = miPublicacion + `</div> `  ;
+             if(data[i].spoiler == "false"){
+                   miPublicacion = miPublicacion + ` 
+                                    <div class="caption">                                  
+                                        <p>Esta publicacion fue marcada como spoiler
+                                    </div>`  ;
+             }else{
+                   miPublicacion = miPublicacion + ` 
+                                    <div class="caption">                                  
+                                        <p>${newTexto}
+                                    </div>`  ;
+             }
+             if(data[i].isImagen == 1){
+                 if(data[i].spoiler == "true"){
+                         miPublicacion = miPublicacion + ` 
+                    <div class="photo">
+                                        <img class="miImagenAttr" src="/ShowImagePost?id=${data[i].id}">
+                    </div>`;
+                 }else{
+                      miPublicacion = miPublicacion + ` 
+                      <div class="photo">
+                                        <img class="miImagenAttr" src="/ShowImagePost?id=${data[i].id}" style="display:none;">
+                    </div>`;
+                 }
+                 
+             }
+                     miPublicacion = miPublicacion + `                                   
                                     <div class="action-buttons" id="${data[i].id}">
                                         <div class="interaction-buttons" id="MisInteracciones">
                                             <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>                                
+                                      </div>
+                                        <input type="hidden" value='${newTexto}' class="miTextoPostHidden">
+                                        <input type="hidden" value="/ShowImagePost?id=${data[i].id}" class="miImagenPostHidden">
+                                           <div class="bookmark" id="${data[i].id}">                    
+                                            <span id="${data[i].idUsuario}">
+                                                <i class="spoilerPost uil-eye-slash"></i>
+                                            </span>
                                         </div>
                                     </div>
 
                                     <div class="liked-by">                                   
                                         <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
                                     </div>
-
-                                   
-                  <br>
+                                     <br>
                                     <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+
                          
                    <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
                  
@@ -722,194 +459,18 @@ $(document).ready(function () {
                                 <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
                                   
                             </form>
-                                    </div>
-                                    
-                             
-                            </div>
-                                </div>
-                    `
-                );
-              } else {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>
-                                        <a class="edit"  href="#" id="${data[i].idUsuario}">
-                                           <h3><i class="uil uil-pen" ></i></h3>
-                                        </a>
-                                    </div>
-
-                                    <div class="photo">
-                                        <img src="/ShowImagePost?id=${data[i].id}">
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
-
-                                    <div class="caption">
-                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                               
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div> 
-                         <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                            </div>
-                                </div>
-                    `
-                );
-              }
-            } else {
-              if (data[i].isImagen != 1) {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>                                 
-                                    </div>
-
-                                   <div class="caption">
-                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
+                        </div>
+                    </div>
+                 </div>`  ;
+                                   
 
                                    
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                         
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div>
-                        <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                                    
-                             
-                            </div>
-                                </div>
-                    `
-                );
-              } else {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>                                    
-                                    </div>
+                
+            $("#misPublicaciones").append(miPublicacion);
+                  
+       
+              
 
-                                    <div class="photo">
-                                        <img src="/ShowImagePost?id=${data[i].id}">
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
-
-                                    <div class="caption">
-                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                               
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div> 
-                         <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                            </div>
-                                </div>
-                    `
-                );
-              }
-            }
             $.ajax(
               //Mostrar Comentarios
               {
@@ -920,29 +481,36 @@ $(document).ready(function () {
               .done(function (data) {
                 for (let i = 0; i < data.length; i++) {
                   let miBusqueda = "#misComentarios-" + data[i].idPublicacion;
-                  if (miIdUsuario == data[i].idUsuario) {
+
+                  if (data[i].spoiler == "true") {
                     $(miBusqueda).append(`
                                         <div class="user">
                                             <div class="profile-photo">
                                                 <img src="/ShowImageUser?id=${data[i].idUsuario}">
                                             </div>
-                                            <div class="ingo">
-                                                <h5>${data[i].username}</h5> <span class="delete" id="${data[i].idComentario}">
-                                            <i class="uil uil-trash"></i>
-                                        </span>
-                                                <small>${data[i].texto}</small>
+                                            <div id="${data[i].idUsuario}" class="ingo">
+                                                <h5>${data[i].username}</h5> 
+                                                 <span id="${data[i].idComentario}">
+                                                    <i class="spoilerComment uil uil-eye-slash"></i>
+                                                </span>
+                                                <small class="MiTexto">${data[i].texto}</small>
                                             </div>
                                         </div>
                                        `);
-                  } else {
+                  }
+                  if (data[i].spoiler == "false") {
                     $(miBusqueda).append(`
                                         <div class="user">
                                             <div class="profile-photo">
                                                 <img src="/ShowImageUser?id=${data[i].idUsuario}">
                                             </div>
-                                            <div class="ingo">
+                                            <div class="ingo" id="${data[i].idUsuario}">
                                                 <h5>${data[i].username}</h5>
-                                                <small>${data[i].texto}</small>
+                                                <span id="${data[i].idComentario}">
+                                                    <i class="spoilerComment uil uil-eye-slash"></i>
+                                                </span>
+                                                <input type="hidden" class="textoOculto" value="${data[i].texto}">
+                                                <small class="MiTexto">Este contenido fue marcado como spoiler</small>
                                             </div>
                                         </div>
                                        `);
@@ -989,11 +557,7 @@ $(document).ready(function () {
     $(this).parent().children(".mostrarComentarios").children(".user").toggle();
   }
   //  COMENTAR
-  $("#misPublicaciones").on(
-    "click",
-    ".insertarComentario",
-    funcInsertComentario
-  );
+  $("#misPublicaciones").on("click",".insertarComentario",funcInsertComentario);
   function funcInsertComentario() {
     let miIdPublicacion = $(this).parent().attr("id");
     let miComentarioPublicacion = $(this)
@@ -1023,6 +587,8 @@ $(document).ready(function () {
     }
   }
 
+
+// CARGAR MAS
   $("#CargarMas").click(function () {
     let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();
     let consultaCasos = $("#miConsultaActual").val();
@@ -1044,6 +610,7 @@ $(document).ready(function () {
   //  EDITAR PUBLICACION
   $("#misPublicaciones").on("click", ".edit", funcEditarPublicaciones);
   function funcEditarPublicaciones() {
+    $("#miFotoCargada").hide();
     let idPublicacion = $(this)
       .parent()
       .parent()
@@ -1105,6 +672,13 @@ $(document).ready(function () {
     cargarPublicacionesComentarios();
   });
 
+  //Mostrar Insert y Ocultar Edit
+  $("#CrearPubliOE").click(function () {
+    $("#InsertarPublicacion").show();
+    $("#EditarPublicacion").hide();
+    $("#miFotoCargada-Edit").hide();
+  });
+
   //Busqueda por texto y hashtag
   $("#postSearch").on("input", function () {
     let postSearch = $(this).val();
@@ -1127,11 +701,8 @@ $(document).ready(function () {
               /#([A-Za-z]+)/g,
               '#<a href="#" class="hash">$1</a>'
             );
-            if (miIdUsuario == data[i].idUsuario) {
-              if (data[i].isImagen != 1) {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
+            let miPublicacion =    `
+                          <div class="feed">
                                     <div class="head">
                                         <div class="user">
                                             <div class="profile-photo">
@@ -1142,33 +713,63 @@ $(document).ready(function () {
                                                 <small>${data[i].Fecha}</small>
                                             </div>
                                         </div>
+                  `;
+             if(miIdUsuario == data[i].idUsuario){
+                 miPublicacion = miPublicacion + `
                                         <a class="edit" id="${data[i].idUsuario}" href="#">
                                             <h3><i class="uil uil-pen"></i></h3>
                                         </a>
-                                    </div>
-
-                                   <div class="caption">
-                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-
+                                        <a class="delete" id="${data[i].id}">
+                                            <h3><i class="uil uil-trash-alt"></i></h3>
+                                        </a> `;
+             }
+                miPublicacion = miPublicacion + `</div> `  ;
+             if(data[i].spoiler == "false"){
+                   miPublicacion = miPublicacion + ` 
+                                    <div class="caption">                                  
+                                        <p>Esta publicacion fue marcada como spoiler
+                                    </div>`  ;
+             }else{
+                   miPublicacion = miPublicacion + ` 
+                                    <div class="caption">                                  
+                                        <p>${newTexto}
+                                    </div>`  ;
+             }
+             if(data[i].isImagen == 1){
+                 if(data[i].spoiler == "true"){
+                         miPublicacion = miPublicacion + ` 
+                    <div class="photo">
+                                        <img class="miImagenAttr" src="/ShowImagePost?id=${data[i].id}">
+                    </div>`;
+                 }else{
+                      miPublicacion = miPublicacion + ` 
+                      <div class="photo">
+                                        <img class="miImagenAttr" src="/ShowImagePost?id=${data[i].id}" style="display:none;">
+                    </div>`;
+                 }
+                 
+             }
+                     miPublicacion = miPublicacion + `                                   
                                     <div class="action-buttons" id="${data[i].id}">
                                         <div class="interaction-buttons" id="MisInteracciones">
                                             <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>                                
+                                      </div>
+                                        <input type="hidden" value='${newTexto}' class="miTextoPostHidden">
+                                        <input type="hidden" value="/ShowImagePost?id=${data[i].id}" class="miImagenPostHidden">
+                                           <div class="bookmark" id="${data[i].id}">                    
+                                            <span id="${data[i].idUsuario}">
+                                                <i class="spoilerPost uil-eye-slash"></i>
+                                            </span>
                                         </div>
                                     </div>
 
                                     <div class="liked-by">                                   
                                         <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
                                     </div>
-
-                                   
-                  <br>
+                                     <br>
                                     <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+
                          
                    <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
                  
@@ -1182,194 +783,18 @@ $(document).ready(function () {
                                 <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
                                   
                             </form>
-                                    </div>
-                                    
-                             
-                            </div>
-                                </div>
-                    `
-                );
-              } else {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>
-                                        <a class="edit"  href="#" id="${data[i].idUsuario}">
-                                           <h3><i class="uil uil-pen" ></i></h3>
-                                        </a>
-                                    </div>
-
-                                    <div class="photo">
-                                        <img src="/ShowImagePost?id=${data[i].id}">
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
-
-                                    <div class="caption">
-                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                               
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div> 
-                         <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                            </div>
-                                </div>
-                    `
-                );
-              }
-            } else {
-              if (data[i].isImagen != 1) {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>                                 
-                                    </div>
-
-                                   <div class="caption">
-                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
+                        </div>
+                    </div>
+                 </div>`  ;
+                                   
 
                                    
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                         
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div>
-                        <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                                    
-                             
-                            </div>
-                                </div>
-                    `
-                );
-              } else {
-                $("#misPublicaciones").append(
-                  `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>                                    
-                                    </div>
+                
+            $("#misPublicaciones").append(miPublicacion);
+                  
+       
+              
 
-                                    <div class="photo">
-                                        <img src="/ShowImagePost?id=${data[i].id}">
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
-
-                                    <div class="caption">
-                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                               
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div> 
-                         <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                            </div>
-                                </div>
-                    `
-                );
-              }
-            }
             $.ajax(
               //Mostrar Comentarios
               {
@@ -1380,29 +805,36 @@ $(document).ready(function () {
               .done(function (data) {
                 for (let i = 0; i < data.length; i++) {
                   let miBusqueda = "#misComentarios-" + data[i].idPublicacion;
-                  if (miIdUsuario == data[i].idUsuario) {
+
+                  if (data[i].spoiler == "true") {
                     $(miBusqueda).append(`
                                         <div class="user">
                                             <div class="profile-photo">
                                                 <img src="/ShowImageUser?id=${data[i].idUsuario}">
                                             </div>
-                                            <div class="ingo">
-                                                <h5>${data[i].username}</h5> <span class="delete" id="${data[i].idComentario}">
-                                            <i class="uil uil-trash"></i>
-                                        </span>
-                                                <small>${data[i].texto}</small>
+                                            <div id="${data[i].idUsuario}" class="ingo">
+                                                <h5>${data[i].username}</h5> 
+                                                 <span id="${data[i].idComentario}">
+                                                    <i class="spoilerComment uil uil-eye-slash"></i>
+                                                </span>
+                                                <small class="MiTexto">${data[i].texto}</small>
                                             </div>
                                         </div>
                                        `);
-                  } else {
+                  }
+                  if (data[i].spoiler == "false") {
                     $(miBusqueda).append(`
                                         <div class="user">
                                             <div class="profile-photo">
                                                 <img src="/ShowImageUser?id=${data[i].idUsuario}">
                                             </div>
-                                            <div class="ingo">
+                                            <div class="ingo" id="${data[i].idUsuario}">
                                                 <h5>${data[i].username}</h5>
-                                                <small>${data[i].texto}</small>
+                                                <span id="${data[i].idComentario}">
+                                                    <i class="spoilerComment uil uil-eye-slash"></i>
+                                                </span>
+                                                <input type="hidden" class="textoOculto" value="${data[i].texto}">
+                                                <small class="MiTexto">Este contenido fue marcado como spoiler</small>
                                             </div>
                                         </div>
                                        `);
@@ -1426,35 +858,29 @@ $(document).ready(function () {
         console.error(data);
       });
   });
-});
-
-//Busqueda por texto y hashtag
-$("#message-search").on("input", function () {
-  let hashSearch = $(this).val();
-  let postSearch = $("#postSearch").val();
-  $.ajax({
-    url: "http://localhost:8080/PublicacionesSearch",
-    type: "GET",
-    data: { texto: postSearch, hashtag: hashSearch },
-  })
+  $("#message-search").on("input", function () {
+    let hashSearch = $(this).val();
+    let postSearch = $("#postSearch").val();
+    $.ajax({
+      url: "http://localhost:8080/PublicacionesSearch",
+      type: "GET",
+      data: { texto: postSearch, hashtag: hashSearch },
+    })
     .done(function (data) {
-      let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();
+        let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();
 
-      let miIdUsuario = $("#miUserIdActual").val();
+        let miIdUsuario = $("#miUserIdActual").val();
 
-      $("#misPublicaciones").empty();
-      for (let i = 0; i < data.length; i++) {
-        if (i < totalPublicaciones) {
-          let texto = data[i].texto;
-          let newTexto = texto.replaceAll(
-            /#([A-Za-z]+)/g,
-            '#<a href="#" class="hash">$1</a>'
-          );
-          if (miIdUsuario == data[i].idUsuario) {
-            if (data[i].isImagen != 1) {
-              $("#misPublicaciones").append(
-                `
-                      <div class="feed">
+        $("#misPublicaciones").empty();
+        for (let i = 0; i < data.length; i++) {
+          if (i < totalPublicaciones) {
+            let texto = data[i].texto;
+            let newTexto = texto.replaceAll(
+              /#([A-Za-z]+)/g,
+              '#<a href="#" class="hash">$1</a>'
+            );
+            let miPublicacion =    `
+                          <div class="feed">
                                     <div class="head">
                                         <div class="user">
                                             <div class="profile-photo">
@@ -1465,33 +891,63 @@ $("#message-search").on("input", function () {
                                                 <small>${data[i].Fecha}</small>
                                             </div>
                                         </div>
+                  `;
+             if(miIdUsuario == data[i].idUsuario){
+                 miPublicacion = miPublicacion + `
                                         <a class="edit" id="${data[i].idUsuario}" href="#">
                                             <h3><i class="uil uil-pen"></i></h3>
                                         </a>
-                                    </div>
-
-                                   <div class="caption">
-                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-
+                                        <a class="delete" id="${data[i].id}">
+                                            <h3><i class="uil uil-trash-alt"></i></h3>
+                                        </a> `;
+             }
+                miPublicacion = miPublicacion + `</div> `  ;
+             if(data[i].spoiler == "false"){
+                   miPublicacion = miPublicacion + ` 
+                                    <div class="caption">                                  
+                                        <p>Esta publicacion fue marcada como spoiler
+                                    </div>`  ;
+             }else{
+                   miPublicacion = miPublicacion + ` 
+                                    <div class="caption">                                  
+                                        <p>${newTexto}
+                                    </div>`  ;
+             }
+             if(data[i].isImagen == 1){
+                 if(data[i].spoiler == "true"){
+                         miPublicacion = miPublicacion + ` 
+                    <div class="photo">
+                                        <img class="miImagenAttr" src="/ShowImagePost?id=${data[i].id}">
+                    </div>`;
+                 }else{
+                      miPublicacion = miPublicacion + ` 
+                      <div class="photo">
+                                        <img class="miImagenAttr" src="/ShowImagePost?id=${data[i].id}" style="display:none;">
+                    </div>`;
+                 }
+                 
+             }
+                     miPublicacion = miPublicacion + `                                   
                                     <div class="action-buttons" id="${data[i].id}">
                                         <div class="interaction-buttons" id="MisInteracciones">
                                             <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
+                                            <span><i class="uil uil-comment-dots"></i></span>                                
+                                      </div>
+                                        <input type="hidden" value='${newTexto}' class="miTextoPostHidden">
+                                        <input type="hidden" value="/ShowImagePost?id=${data[i].id}" class="miImagenPostHidden">
+                                           <div class="bookmark" id="${data[i].id}">                    
+                                            <span id="${data[i].idUsuario}">
+                                                <i class="spoilerPost uil-eye-slash"></i>
+                                            </span>
                                         </div>
                                     </div>
 
                                     <div class="liked-by">                                   
                                         <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
                                     </div>
-
-                                   
-                  <br>
+                                     <br>
                                     <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
+
                          
                    <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
                  
@@ -1505,571 +961,171 @@ $("#message-search").on("input", function () {
                                 <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
                                   
                             </form>
-                                    </div>
-                                    
-                             
-                            </div>
-                                </div>
-                    `
-              );
-            } else {
-              $("#misPublicaciones").append(
-                `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>
-                                        <a class="edit"  href="#" id="${data[i].idUsuario}">
-                                           <h3><i class="uil uil-pen" ></i></h3>
-                                        </a>
-                                    </div>
-
-                                    <div class="photo">
-                                        <img src="/ShowImagePost?id=${data[i].id}">
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
-
-                                    <div class="caption">
-                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                               
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div> 
-                         <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                            </div>
-                                </div>
-                    `
-              );
-            }
-          } else {
-            if (data[i].isImagen != 1) {
-              $("#misPublicaciones").append(
-                `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>                                 
-                                    </div>
-
-                                   <div class="caption">
-                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
+                        </div>
+                    </div>
+                 </div>`  ;
+                                   
 
                                    
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                         
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div>
-                        <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                                    
-                             
-                            </div>
-                                </div>
-                    `
-              );
-            } else {
-              $("#misPublicaciones").append(
-                `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>                                    
-                                    </div>
+                
+            $("#misPublicaciones").append(miPublicacion);
+                  
+       
+              
 
-                                    <div class="photo">
-                                        <img src="/ShowImagePost?id=${data[i].id}">
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
-
-                                    <div class="caption">
-                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                               
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div> 
-                         <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                            </div>
-                                </div>
-                    `
-              );
-            }
-          }
-          $.ajax(
-            //Mostrar Comentarios
-            {
-              url: "http://localhost:8080/Comentario",
-              data: { idPublicacion: data[i].id },
-            }
-          )
-            .done(function (data) {
-              for (let i = 0; i < data.length; i++) {
-                let miBusqueda = "#misComentarios-" + data[i].idPublicacion;
-                if (miIdUsuario == data[i].idUsuario) {
-                  $(miBusqueda).append(`
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h5>${data[i].username}</h5> <span class="delete" id="${data[i].idComentario}">
-                                            <i class="uil uil-trash"></i>
-                                        </span>
-                                                <small>${data[i].texto}</small>
-                                            </div>
-                                        </div>
-                                       `);
-                } else {
-                  $(miBusqueda).append(`
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h5>${data[i].username}</h5>
-                                                <small>${data[i].texto}</small>
-                                            </div>
-                                        </div>
-                                       `);
-                }
-
-                $(miBusqueda).children(".user").hide();
+            $.ajax(
+              //Mostrar Comentarios
+              {
+                url: "http://localhost:8080/Comentario",
+                data: { idPublicacion: data[i].id },
               }
-            })
-            .fail(function (data) {
-              console.error(data);
-            });
+            )
+              .done(function (data) {
+                for (let i = 0; i < data.length; i++) {
+                  let miBusqueda = "#misComentarios-" + data[i].idPublicacion;
 
-          if (i % 10 == 0) {
-            numberPage = i / 10 + 1;
-            Math.trunc(numberPage);
+                  if (data[i].spoiler == "true") {
+                    $(miBusqueda).append(`
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div id="${data[i].idUsuario}" class="ingo">
+                                                <h5>${data[i].username}</h5> 
+                                                 <span id="${data[i].idComentario}">
+                                                    <i class="spoilerComment uil uil-eye-slash"></i>
+                                                </span>
+                                                <small class="MiTexto">${data[i].texto}</small>
+                                            </div>
+                                        </div>
+                                       `);
+                  }
+                  if (data[i].spoiler == "false") {
+                    $(miBusqueda).append(`
+                                        <div class="user">
+                                            <div class="profile-photo">
+                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
+                                            </div>
+                                            <div class="ingo" id="${data[i].idUsuario}">
+                                                <h5>${data[i].username}</h5>
+                                                <span id="${data[i].idComentario}">
+                                                    <i class="spoilerComment uil uil-eye-slash"></i>
+                                                </span>
+                                                <input type="hidden" class="textoOculto" value="${data[i].texto}">
+                                                <small class="MiTexto">Este contenido fue marcado como spoiler</small>
+                                            </div>
+                                        </div>
+                                       `);
+                  }
+
+                  $(miBusqueda).children(".user").hide();
+                }
+              })
+              .fail(function (data) {
+                console.error(data);
+              });
+
+            if (i % 10 == 0) {
+              numberPage = i / 10 + 1;
+              Math.trunc(numberPage);
+            }
           }
         }
-      }
-    })
-    .fail(function (data) {
-      console.error(data);
-    });
-});
+      })
+      .fail(function (data) {
+        console.error(data);
+      });
+  });
 
-// Al hacer click a una nota
-  $("#misPublicaciones").on('click', ".hash", funcBuscarHashtag);
-    function funcBuscarHashtag() {
-        let hashSearch = $(this).text();
-        $("#message-search").val(hashSearch);
-        let postSearch = $("#postSearch").val();
+  //  Spoiler Click Comentarios
+  $("#misPublicaciones").on("click", ".spoilerComment", funcSpoilerComments);
+  function funcSpoilerComments() {
+    let miIdUsuario = $("#miUserIdActual").val();
+    let idComentario = $(this).parent().attr("id");
+    let idUsuario = $(this).parent().parent().attr("id");
+    if (idUsuario == miIdUsuario) {
+      if (confirm("¿Estas seguro de marcar este comentario como spoiler?")) {
         $.ajax({
-    url: "http://localhost:8080/PublicacionesSearch",
-    type: "GET",
-    data: { texto: postSearch, hashtag: hashSearch },
-  })
-    .done(function (data) {
-      let totalPublicaciones = $("#miTotalDePublicacionesCargadas").val();
+          url: "http://localhost:8080/SpoilerComentario",
+          type: "POST",
+          data: { id: idComentario },
+        })
+          .done(function (data) {
+            cargarPublicaciones();
 
-      let miIdUsuario = $("#miUserIdActual").val();
-
-      $("#misPublicaciones").empty();
-      for (let i = 0; i < data.length; i++) {
-        if (i < totalPublicaciones) {
-          let texto = data[i].texto;
-          let newTexto = texto.replaceAll(
-            /#([A-Za-z]+)/g,
-            '#<a href="#" class="hash">$1</a>'
-          );
-          if (miIdUsuario == data[i].idUsuario) {
-            if (data[i].isImagen != 1) {
-              $("#misPublicaciones").append(
-                `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>
-                                        <a class="edit" id="${data[i].idUsuario}" href="#">
-                                            <h3><i class="uil uil-pen"></i></h3>
-                                        </a>
-                                    </div>
-
-                                   <div class="caption">
-                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
-
-                                   
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                         
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div>
-                        <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                                    
-                             
-                            </div>
-                                </div>
-                    `
-              );
-            } else {
-              $("#misPublicaciones").append(
-                `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>
-                                        <a class="edit"  href="#" id="${data[i].idUsuario}">
-                                           <h3><i class="uil uil-pen" ></i></h3>
-                                        </a>
-                                    </div>
-
-                                    <div class="photo">
-                                        <img src="/ShowImagePost?id=${data[i].id}">
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
-
-                                    <div class="caption">
-                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                               
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div> 
-                         <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                            </div>
-                                </div>
-                    `
-              );
-            }
-          } else {
-            if (data[i].isImagen != 1) {
-              $("#misPublicaciones").append(
-                `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>                                 
-                                    </div>
-
-                                   <div class="caption">
-                                        <p><b style="display: block;">${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
-
-                                   
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                         
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div>
-                        <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                                    
-                             
-                            </div>
-                                </div>
-                    `
-              );
-            } else {
-              $("#misPublicaciones").append(
-                `
-                      <div class="feed">
-                                    <div class="head">
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h3>${data[i].NombreCompleto}</h3>
-                                                <small>${data[i].Fecha}</small>
-                                            </div>
-                                        </div>                                    
-                                    </div>
-
-                                    <div class="photo">
-                                        <img src="/ShowImagePost?id=${data[i].id}">
-                                    </div>
-
-                                    <div class="action-buttons" id="${data[i].id}">
-                                        <div class="interaction-buttons" id="MisInteracciones">
-                                            <span class="Usuariolike"><i class="uil uil-heart" ></i></span>
-                                            <span><i class="uil uil-comment-dots"></i></span>
-                                  
-                                        </div>
-                                        <div class="bookmark">
-                                            <span><i class="uil uil-eye-slash"></i></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="liked-by">                                   
-                                        <p>Le gusta a ${data[i].TotalLikes} personas</b></p>
-                                    </div>
-
-                                    <div class="caption">
-                                        <p><b>${data[i].NombreCompleto}</b> ${newTexto} 
-                                    </div>
-                  <br>
-                                    <div class="comments text-muted">Ver los ${data[i].TotalComentarios} comentarios</div>
-                               
-                   <div class="head mostrarComentarios" id="misComentarios-${data[i].id}"  style="display:block;>
-                 
-                                    </div> 
-                         <div class="head">
-                            <form class="create-post" id="${data[i].id}">
-                                <div class="profile-photo">
-                                    <img src="/ShowImage">
-                                </div>
-                                <input type="text" class="miComentarioTexto" name="comentario" placeholder="Escribe tu comentario...">                 
-                                <button type="button" class="insertarComentario btn btn-primary" >Comentar</button>
-                                  
-                            </form>
-                                    </div>
-                            </div>
-                                </div>
-                    `
-              );
-            }
-          }
-          $.ajax(
-            //Mostrar Comentarios
-            {
-              url: "http://localhost:8080/Comentario",
-              data: { idPublicacion: data[i].id },
-            }
-          )
-            .done(function (data) {
-              for (let i = 0; i < data.length; i++) {
-                let miBusqueda = "#misComentarios-" + data[i].idPublicacion;
-                if (miIdUsuario == data[i].idUsuario) {
-                  $(miBusqueda).append(`
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h5>${data[i].username}</h5> <span class="delete" id="${data[i].idComentario}">
-                                            <i class="uil uil-trash"></i>
-                                        </span>
-                                                <small>${data[i].texto}</small>
-                                            </div>
-                                        </div>
-                                       `);
-                } else {
-                  $(miBusqueda).append(`
-                                        <div class="user">
-                                            <div class="profile-photo">
-                                                <img src="/ShowImageUser?id=${data[i].idUsuario}">
-                                            </div>
-                                            <div class="ingo">
-                                                <h5>${data[i].username}</h5>
-                                                <small>${data[i].texto}</small>
-                                            </div>
-                                        </div>
-                                       `);
-                }
-
-                $(miBusqueda).children(".user").hide();
-              }
-            })
-            .fail(function (data) {
-              console.error(data);
-            });
-
-          if (i % 10 == 0) {
-            numberPage = i / 10 + 1;
-            Math.trunc(numberPage);
-          }
-        }
+            alert("ContenidoActualizado");
+          })
+          .fail(function (data) {
+            console.error(data);
+          });
       }
-    })
-    .fail(function (data) {
-      console.error(data);
-    });
+    } else {
+        let miComentarioHidden = $(this).parent().parent().children(".textoOculto").val();
+         $(this).parent().parent().children(".MiTexto").empty();
+         $(this).parent().parent().children(".MiTexto").text(miComentarioHidden);
     }
+  }
+
+  //  Spoiler Click Publicaciones
+  $("#misPublicaciones").on("click", ".spoilerPost", funcSpoilerPost);
+  function funcSpoilerPost() {
+    let miIdUsuario = $("#miUserIdActual").val();
+    let idPublicacion = $(this).parent().parent().attr("id");
+    let idUsuario = $(this).parent().attr("id");
+    if (idUsuario == miIdUsuario) {
+      if (confirm("¿Estas seguro de marcar este comentario como spoiler?")) {
+        $.ajax({
+          url: "http://localhost:8080/SpoilerPost",
+          type: "POST",
+          data: { id: idPublicacion },
+        })
+          .done(function (data) {
+            cargarPublicaciones();
+            alert("ContenidoActualizado");
+          })
+          .fail(function (data) {
+            console.error(data);
+          });
+      }
+    } else {
+      let miTextoSpoiler = $(this)
+        .parent()
+        .parent()
+        .parent()
+        .children(".miTextoPostHidden")
+        .attr("value");
+      let miSrcImagen = $(this)
+        .parent()
+        .parent()
+        .parent()
+        .children(".miImagenPostHidden")
+        .attr("value");
+
+      let miNuevoTexto ='<p>' + miTextoSpoiler;
+      $(this).parent().parent().parent().parent().children(".caption").empty();
+      $(this)
+        .parent()
+        .parent()
+        .parent()
+        .parent()
+        .children(".caption")
+        .append(miNuevoTexto);
+      $(this)
+        .parent()
+        .parent()
+        .parent()
+        .parent()
+        .children(".photo")
+        .children(".miImagenAttr")
+        .attr("src", miSrcImagen);
+        $(this)
+        .parent()
+        .parent()
+        .parent()
+        .parent()
+        .children(".photo")
+        .children(".miImagenAttr")
+        .attr("style", "");
+    }
+  }
+});

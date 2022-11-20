@@ -214,6 +214,9 @@ main .container .left .profile {
 .miform:hover{
      background: var(--color-light);
 }
+#CargarMas{
+    
+}
 
 .miform{
      background: var(--color-white);
