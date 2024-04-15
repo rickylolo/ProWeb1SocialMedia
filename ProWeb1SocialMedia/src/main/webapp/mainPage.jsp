@@ -192,7 +192,7 @@
                               
                      
                             </div>
-                                   <input type="hidden" value="10" id="miTotalDePublicacionesCargadas">
+                                   <input type="hidden" value="5" id="miTotalDePublicacionesCargadas">
                                    <Button class="btn btn-primary" type="button" id="CargarMas" >Cargar Mas</button>
                                    <div class="feeds">
                                     <div class="feed">
